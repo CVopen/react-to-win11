@@ -74,14 +74,14 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.jsx', '.ts', '.js'],
     alias: {
-      '@': path.resolve(process.cwd(), 'src')
-    }
+      '@': path.resolve(process.cwd(), 'src'),
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../public/index.html'),
       title: 'react to win11',
-      favicon: path.resolve(__dirname, '../public/favicon.ico')
+      favicon: path.resolve(__dirname, '../public/favicon.ico'),
     }),
   ],
 }
