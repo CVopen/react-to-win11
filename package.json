@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "homepage": "./",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.prod.js",
     "start": "cross-env NODE_ENV=development webpack server --config config/webpack.dev.js",
     "lint": "prettier --write . && eslint src/**",
     "prepare": "husky install",
+    "gp": "gh-pages -d build -m chore(release):publish",
     "deploy": "node ./scripts/deploy.js"
   },
   "keywords": [],
@@ -33,6 +35,7 @@
     "eslint": "^8.11.0",
     "eslint-config-alloy": "^4.5.1",
     "eslint-plugin-react": "^7.29.4",
+    "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.1",
     "mini-css-extract-plugin": "^2.6.0",

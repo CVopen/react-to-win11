@@ -23,5 +23,5 @@ function execSync(command, args) {
 }
 
 execSync('yarn', 'build').then(() => {
-  exec('npx', 'gh-pages -d build -m chore(release): publish')
+  exec('yarn', 'gp')
 })
