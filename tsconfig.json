@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "./dist",
+    "target": "es5",
+    "module": "esnext",
+    "strict": true,
+    "allowJs": true,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["node_modules/@types", "src/typings"],
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
