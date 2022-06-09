@@ -17,7 +17,7 @@ const App: React.FC = () => {
     <>
       <h1>win11 to react</h1>
       <h2>test</h2>
-      <Title>style</Title>
+      <Title>style-components</Title>
       <div>{count}</div>
       <button onClick={() => dispatch(addCount(1))}>add</button>
     </>
