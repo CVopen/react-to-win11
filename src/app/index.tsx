@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Hello from '@/components/Hello'
+import Hello from '@/components/Loading'
 
 function App() {
   return (
