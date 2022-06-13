@@ -2,10 +2,12 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 import appReducer from './app'
+import winReducer from './win'
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
+    win: winReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

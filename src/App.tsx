@@ -1,35 +1,29 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Provider } from 'react-redux'
-import styled from 'styled-components'
-import Loading from './components/Loading'
-import { store, useAppDispatch, useAppSelector } from './store'
-import { addCount } from './store/app'
+import { store, useAppSelector } from './store'
+import Bootstrap from './screen/Bootstrap'
 
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: palevioletred;
-`
+import './assets/css/reset.css'
+import ErrorBoundary from './screen/ErrorBoundary'
+import LoginLock from './screen/LoginLock'
 
 const App: React.FC = () => {
-  const dispatch = useAppDispatch()
-  const { count } = useAppSelector(({ app }) => app)
+  const { boot } = useAppSelector(({ win }) => win)
+
   return (
-    <div style={{ background: '#000' }}>
-      <h1>win11 to react</h1>
-      <h2>test</h2>
-      <Loading style={{ background: 'red' }} />
-      <Title>style-components</Title>
-      <div>{count}</div>
-      <button onClick={() => dispatch(addCount(1))}>add</button>
-    </div>
+    <ErrorBoundary>
+      {boot && <Bootstrap />}
+      <LoginLock />
+    </ErrorBoundary>
   )
 }
 
 export default () => {
   return (
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Suspense fallback={<h1>Loading...</h1>}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Suspense>
   )
 }

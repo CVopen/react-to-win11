@@ -4,7 +4,7 @@ export const Circle = styled.circle`
   stroke: white;
   stroke-width: 2px;
   transform-origin: 50% 50%;
-  animation: 2s linear 0s infinite normal none running spin-infinite;
+  animation: 3s linear 0s infinite normal none running spin-infinite;
   @keyframes spin-infinite {
     0% {
       stroke-dasharray: 0.01px, 43.97px;
