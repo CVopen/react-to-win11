@@ -7,6 +7,14 @@ import './assets/css/reset.css'
 import ErrorBoundary from './screen/ErrorBoundary'
 import LoginLock from './screen/LoginLock'
 
+import dayjs from 'dayjs'
+import isLeapYear from 'dayjs/plugin/isLeapYear'
+import 'dayjs/locale/zh-cn'
+import Desktop from './screen/Desktop'
+
+dayjs.extend(isLeapYear)
+dayjs.locale('zh-cn')
+
 const App: React.FC = () => {
   const { boot } = useAppSelector(({ win }) => win)
 
@@ -14,6 +22,7 @@ const App: React.FC = () => {
     <ErrorBoundary>
       {boot && <Bootstrap />}
       <LoginLock />
+      <Desktop />
     </ErrorBoundary>
   )
 }

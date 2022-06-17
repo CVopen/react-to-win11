@@ -5,8 +5,6 @@ import { ErrorContainer, ErrorPage, IErrorFallback, IErrorProps } from './type-c
 
 import code from '@/assets/code.png'
 
-console.log(code)
-
 function ErrorFallback({ error, resetErrorBoundary }: IErrorFallback) {
   return (
     <ErrorPage>
