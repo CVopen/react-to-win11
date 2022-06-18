@@ -107,8 +107,8 @@ section {
 }
 html,
 body {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 ol,
@@ -137,4 +137,4 @@ table {
 }
 
 
-/*# sourceMappingURL=main-cc3f0323d01f2258b309.css.map*/
+/*# sourceMappingURL=main-f8ebcfb8e76d9ec53601.css.map*/

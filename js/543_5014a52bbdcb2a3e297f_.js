@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkreact_to_win11=self.webpackChunkreact_to_win11||[]).push([[543],{543:(e,n,t)=>{t.r(n),t.d(n,{default:()=>r});var u=t(294);const l=function(){return u.createElement("div",null,"Menu")};function r(){return u.createElement("div",null,u.createElement(l,null))}}}]);
