@@ -13,6 +13,8 @@ function index() {
     dispatch(bootstrapAsync())
   }, [])
 
+  if (process.env.NODE_ENV === 'development') return null
+
   return (
     <Div>
       <Img src={logo} />

@@ -31,4 +31,6 @@ export const Div = styled.div`
 
 export interface LoadingProps {
   style?: CSSProperties
+  fill?: string
+  stroke?: string
 }

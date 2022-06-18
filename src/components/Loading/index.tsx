@@ -1,11 +1,11 @@
 import React, { memo } from 'react'
 import { Circle, Div, LoadingProps } from './type-css'
 
-function Loading({ style }: LoadingProps) {
+function Loading({ style, fill, stroke }: LoadingProps) {
   return (
-    <Div style={style || {}}>
+    <Div style={style}>
       <svg height={48} width={48} viewBox="0 0 16 16">
-        <Circle cx="8px" cy="8px" r="7px" />
+        <Circle cx="8px" cy="8px" r="7px" fill={fill} stroke={stroke} />
       </svg>
     </Div>
   )
