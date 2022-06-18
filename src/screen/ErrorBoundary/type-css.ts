@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { DivFull } from '@/assets/css/common'
 
 export interface IErrorProps {
   children?: React.ReactNode
@@ -10,7 +11,7 @@ export interface IErrorFallback {
   resetErrorBoundary: (...args: Array<unknown>) => void
 }
 
-export const ErrorPage = styled.div`
+export const ErrorPage = styled(DivFull)`
   box-sizing: border-box;
   width: 100%;
   height: 100%;

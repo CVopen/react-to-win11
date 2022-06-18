@@ -7,14 +7,27 @@ import './assets/css/reset.css'
 import ErrorBoundary from './screen/ErrorBoundary'
 import LoginLock from './screen/LoginLock'
 
+import dayjs from 'dayjs'
+import isLeapYear from 'dayjs/plugin/isLeapYear'
+import 'dayjs/locale/zh-cn'
+import Desktop from './screen/Desktop'
+import { ThemeProvider } from 'styled-components'
+import themeData from './assets/css/theme'
+
+dayjs.extend(isLeapYear)
+dayjs.locale('zh-cn')
+
 const App: React.FC = () => {
-  const { boot } = useAppSelector(({ win }) => win)
+  const { boot, lock, theme } = useAppSelector(({ win }) => win)
 
   return (
-    <ErrorBoundary>
-      {boot && <Bootstrap />}
-      <LoginLock />
-    </ErrorBoundary>
+    <ThemeProvider theme={themeData[theme]}>
+      <ErrorBoundary>
+        {boot && <Bootstrap />}
+        {lock && <LoginLock />}
+        <Desktop />
+      </ErrorBoundary>
+    </ThemeProvider>
   )
 }
 

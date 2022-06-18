@@ -1,8 +1,7 @@
 import styled from 'styled-components'
+import { DivFull } from '@/assets/css/common'
 
-export const Div = styled.div`
-  width: 100%;
-  height: 100%;
+export const Div = styled(DivFull)`
   background-color: #000;
   display: flex;
   justify-content: center;
