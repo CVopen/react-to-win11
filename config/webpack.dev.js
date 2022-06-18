@@ -18,5 +18,5 @@ module.exports = merge(common, {
     compress: true,
     historyApiFallback: true,
   },
-  plugins: [new webpack.HotModuleReplacementPlugin(), new ReactRefreshWebpackPlugin()],
+  plugins: [new webpack.HotModuleReplacementPlugin(), new ReactRefreshWebpackPlugin({ overlay: false })],
 })
