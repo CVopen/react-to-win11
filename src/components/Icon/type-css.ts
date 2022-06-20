@@ -1,9 +1,9 @@
 import styled, { CSSProperties } from 'styled-components'
 
 export enum Size {
-  large = '16px',
+  small = '16px',
   middle = '24px',
-  small = '36px',
+  large = '36px',
 }
 
 export interface IIcon {
