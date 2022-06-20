@@ -11,7 +11,7 @@ export const Input = styled.input`
   padding-left: 5px;
   padding-right: ${({ count }: { count: number }) => `${count * 24 + count ? 10 : 5}px`};
   border: none;
-  border-radius: 4px;
+  border-radius: ${(props) => props.theme.borderRadiusMiddle};
   box-sizing: border-box;
   &::-webkit-selection {
     background: #ccc;
@@ -25,7 +25,7 @@ export const Input = styled.input`
 
 export const Span = styled.span`
   position: relative;
-  border-radius: 4px;
+  border-radius: ${(props) => props.theme.borderRadiusMiddle};
   overflow: hidden;
   border: 1px solid ${(props) => props.theme.inputborderColor};
   display: inline-block;
@@ -62,7 +62,7 @@ export const IconSpan = styled.span`
   box-sizing: border-box;
   color: #b5b5b5;
   transition: all 0.2s;
-  border-radius: 2px;
+  border-radius: ${(props) => props.theme.borderRadiusSmall};
   &:hover {
     background-color: ${(props) => props.theme.inputborderColor};
   }

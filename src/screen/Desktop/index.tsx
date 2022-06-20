@@ -3,23 +3,25 @@ import useResize from '@/hooks/useResize'
 import React, { lazy, Suspense } from 'react'
 import { DesktopPage } from './type-css'
 
-import defaultImage from '@/assets/img/wapppaper/default/default.jpg'
-
 const Menu = lazy(() => import('./components/Menu'))
+const TaskBar = lazy(() => import('./components/TaskBar'))
+const DesktopIconList = lazy(() => import('./components/DesktopIconList'))
 
 export default function index() {
   const { isShow, clientX, clientY, menuRef } = useContextmenu<HTMLDivElement>()
-  console.log(require('../../assets/img/wapppaper/default/default.jpg'), defaultImage)
-  useResize()
+
+  const Bomb = useResize()
 
   return (
     <DesktopPage
       ref={menuRef}
       style={{ backgroundImage: `url(${require('../../assets/img/wapppaper/default/default.jpg')})` }}
     >
+      <Bomb />
       <Suspense fallback={<h1>Loading...</h1>}>
-        Desktop
+        <DesktopIconList />
         <Menu />
+        <TaskBar />
       </Suspense>
     </DesktopPage>
   )

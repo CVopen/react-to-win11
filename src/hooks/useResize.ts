@@ -1,8 +1,10 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 type Timer = ReturnType<typeof setTimeout>
 
 export default function useResize() {
+  const [error, setError] = useState(false)
+
   useEffect(() => {
     window.onresize = (() => {
       let timer: Timer | null
@@ -18,8 +20,20 @@ export default function useResize() {
     handleError()
   }, [])
 
+  useEffect(() => {
+    if (!error) return
+    setError(false)
+  }, [error])
+
+  function Bomb() {
+    if (!error) return null
+    throw new Error('The window width is too small.')
+  }
+
   const handleError = useCallback(() => {
     if (window.innerWidth >= 1440) return
-    throw new Error('The window width is too small.')
+    setError(true)
   }, [])
+
+  return Bomb
 }

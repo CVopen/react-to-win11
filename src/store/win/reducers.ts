@@ -1,6 +1,6 @@
 import { session } from '@/utils/storage'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { IWinState } from './state'
+import { desktopS, IWinState } from './state'
 
 const wallunlock = (state: IWinState) => {
   state.lock = false
@@ -12,4 +12,8 @@ const changeTheme = (state: IWinState) => {
   session.setItem('theme', state.theme)
 }
 
-export default { wallunlock, changeTheme }
+const changeDesktopSize = (state: IWinState, action: PayloadAction<desktopS>) => {
+  state.desktopSize = action.payload
+}
+
+export default { wallunlock, changeTheme, changeDesktopSize }

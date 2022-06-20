@@ -15,7 +15,7 @@ module.exports = {
     filename: 'js/[name]_[contenthash]_.js',
     assetModuleFilename: 'images/[hash][ext][query]',
     pathinfo: false,
-    publicPath: isDev ? '/' : '/react-to-win11',
+    publicPath: isDev ? '/' : '/react-to-win11/',
   },
   cache: {
     type: 'filesystem',

@@ -12,4 +12,4 @@ export const winSlice = createSlice({
 })
 
 export default winSlice.reducer
-export const { wallunlock, changeTheme } = winSlice.actions
+export const { wallunlock, changeTheme, changeDesktopSize } = winSlice.actions
