@@ -1,11 +1,13 @@
-import useContextmenu from '@/hooks/useContextmenu'
+import useContextmenu, { IMenuState } from '@/hooks/useContextmenu'
 import useResize from '@/hooks/useResize'
-import React, { lazy, Suspense } from 'react'
+import React, { createContext, lazy, Suspense } from 'react'
 import { DesktopPage } from './type-css'
 
 const Menu = lazy(() => import('./components/Menu'))
 const TaskBar = lazy(() => import('./components/TaskBar'))
 const DesktopIconList = lazy(() => import('./components/DesktopIconList'))
+
+export const MenuContext = createContext<IMenuState>({ isShow: false, clientX: 0, clientY: 0 })
 
 export default function index() {
   const { isShow, clientX, clientY, menuRef } = useContextmenu<HTMLDivElement>()
@@ -19,9 +21,11 @@ export default function index() {
     >
       <Bomb />
       <Suspense fallback={<h1>Loading...</h1>}>
-        <DesktopIconList />
-        <Menu />
-        <TaskBar />
+        <MenuContext.Provider value={{ isShow, clientX, clientY }}>
+          <DesktopIconList />
+          <Menu />
+          <TaskBar />
+        </MenuContext.Provider>
       </Suspense>
     </DesktopPage>
   )

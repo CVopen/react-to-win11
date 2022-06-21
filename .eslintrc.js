@@ -25,5 +25,6 @@ module.exports = {
     '@typescript-eslint/no-invalid-void-type': 'off',
     '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/no-require-imports': 'off',
+    'react/jsx-no-constructed-context-values': 'off'
   },
 }
