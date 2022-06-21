@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, createContext } from 'react'
 
-interface IMenuState {
+export interface IMenuState {
   isShow: boolean
   clientX: number
   clientY: number
@@ -16,9 +16,7 @@ export default function useContextmenu<T>() {
       e.preventDefault()
       const { clientX, clientY } = e
 
-      if (e.target === menuRef.current) {
-        setMenuState({ clientX, clientY, isShow: true })
-      }
+      setMenuState({ clientX, clientY, isShow: e.target === menuRef.current })
     }
     const handleClick = (e: MouseEvent) => {
       e.preventDefault()
