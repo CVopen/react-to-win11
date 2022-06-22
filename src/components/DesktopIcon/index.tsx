@@ -9,6 +9,7 @@ function index({ src, onClick, name }: IDesktopIconProps) {
   const { desktopSize } = useAppSelector(({ win }) => win)
   const imgRef = useRef<null | HTMLImageElement>(null)
   const divRef = useRef<null | HTMLDivElement>(null)
+  const pRef = useRef<null | HTMLParagraphElement>(null)
   const [down, setDown] = useState(false)
   const [isShow, setShow] = useState(false)
 
@@ -18,8 +19,7 @@ function index({ src, onClick, name }: IDesktopIconProps) {
 
   const handleMouseUp = useCallback(
     (e: MouseEvent) => {
-      setShow(e.target === divRef.current || e.target === imgRef.current)
-      if (isShow) setShow(false)
+      setShow(e.target === divRef.current || e.target === imgRef.current || e.target === pRef.current)
       setDown(false)
     },
     [isShow],
@@ -27,10 +27,16 @@ function index({ src, onClick, name }: IDesktopIconProps) {
 
   useEvent({ eventName: 'mouseup', cb: handleMouseUp })
 
+  const handleClick = useCallback(() => {
+    setDown(false)
+    setShow(false)
+    onClick()
+  }, [onclick])
+
   return (
-    <DeskTopIconDiv ref={divRef} size={desktopSize} onClick={onClick} down={down}>
+    <DeskTopIconDiv ref={divRef} size={desktopSize} onClick={handleClick} down={down}>
       <img ref={imgRef} src={src} onMouseDown={handleMouseDown} />
-      <p>{name}</p>
+      <p ref={pRef}>{name}</p>
       <Menu isShow={isShow} />
     </DeskTopIconDiv>
   )

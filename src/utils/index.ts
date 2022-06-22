@@ -1,11 +1,17 @@
-export function sum(a: number, b: number): number {
-  return a + b
+interface ICalc {
+  X: number
+  Y: number
+  W: number
+  H: number
 }
 
-export function minus(a: number, b: number): number {
-  return a - b
-}
-
-export function add(a: number, b: number): number {
-  return a + b
+export function clacMenuPosition({ X, Y, W, H }: ICalc): { X: number; Y: number } {
+  const { innerWidth, innerHeight } = window
+  if (X + W > innerWidth) {
+    X = innerWidth - W
+  }
+  if (Y + H > innerHeight) {
+    Y = innerHeight - H
+  }
+  return { X, Y }
 }

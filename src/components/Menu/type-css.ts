@@ -1,8 +1,11 @@
-import styled from 'styled-components'
+import React from 'react'
+import styled, { CSSProperties } from 'styled-components'
 
 export interface IPosition {
   X: number
   Y: number
+  ref?: React.MutableRefObject<HTMLDivElement | null>
+  style?: CSSProperties
 }
 
 export const MenuDiv = styled.div`
@@ -11,4 +14,5 @@ export const MenuDiv = styled.div`
   position: fixed;
   top: ${({ Y }: IPosition) => `${Y}px`};
   left: ${({ X }: IPosition) => `${X}px`};
+  user-select: none;
 `

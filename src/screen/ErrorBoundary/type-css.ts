@@ -50,13 +50,15 @@ export const ErrorContainer = styled.div`
       color: #fff;
     }
   }
+  img {
+    margin-right: 10px;
+  }
   @media screen and (max-width: 800px) {
     & {
       padding: 0 10px;
       img {
         width: 30%;
         object-fit: contain;
-        margin-right: 10px;
       }
     }
   }
