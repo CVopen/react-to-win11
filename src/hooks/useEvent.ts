@@ -11,7 +11,6 @@ export default function useEvent<K extends keyof WindowEventMap>({
   useEffect(() => {
     window.addEventListener(eventName, cb)
     return () => {
-      console.log(123)
       window.removeEventListener(eventName, cb)
     }
   }, [])

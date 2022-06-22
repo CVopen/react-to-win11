@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { IPosition, MenuDiv } from './type-css'
 
-export default (props: IPosition) => {
-  return <MenuDiv {...props}>Menu</MenuDiv>
-}
+export default forwardRef((props: IPosition, ref) => {
+  return (
+    <MenuDiv {...props} ref={ref as React.MutableRefObject<HTMLDivElement | null>}>
+      Menu
+    </MenuDiv>
+  )
+})
