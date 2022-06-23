@@ -25,7 +25,7 @@ export const Image = styled.img`
 export const LoadingDiv = styled(CenteredDiv)`
   width: ${({ width }: IImgProps) => `${width}px`};
   height: ${({ height, width }: IImgProps) => `${height ? height : width}px`};
-  background-color: #9f9f9f;
+  background-color: rgba(159, 159, 159, 0.5);
   overflow: hidden;
   display: inline-block;
   text-align: center;

@@ -31,7 +31,7 @@ export const LoginScreenDiv = styled(DivFullCenter)`
   transform: translateY(30px);
   animation: bgc-blur 0.3s linear 0s 1 alternate forwards;
   opacity: 0;
-  div {
+  .login-form {
     transform: translateY(100px);
     animation: move-top 0.2s linear 0s 1 alternate forwards;
     @keyframes move-top {

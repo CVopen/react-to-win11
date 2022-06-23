@@ -1,11 +1,15 @@
 import React from 'react'
 import styled, { CSSProperties } from 'styled-components'
 
-export interface IPosition {
+export interface IMenuProps {
+  style?: CSSProperties
+  show?: boolean
+  children: React.ReactNode | React.ReactNode[]
+}
+
+interface IPosition {
   X: number
   Y: number
-  ref?: React.MutableRefObject<HTMLDivElement | null>
-  style?: CSSProperties
 }
 
 export const MenuDiv = styled.div`

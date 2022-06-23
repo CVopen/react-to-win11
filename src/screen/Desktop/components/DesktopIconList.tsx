@@ -1,5 +1,7 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import DesktopIcon from '@/components/DesktopIcon'
+import MenuIcon from './MenuIcon'
+import useEvent from '@/hooks/useEvent'
 
 function DesktopIconList() {
   const config = [
@@ -33,15 +35,39 @@ function DesktopIconList() {
     },
   ]
 
+  const [isShow, setShow] = useState(false)
+  const [active, setActive] = useState<typeof config[number]>({ name: '', src: '' })
+
+  useEvent({
+    eventName: 'click',
+    cb: () => setShow(false),
+  })
+
+  useEvent({
+    eventName: 'contextmenu',
+    cb: (e) => {
+      const activeName = (e.target as HTMLElement).dataset.name
+      if (!activeName) return setShow(false)
+      const active = config.find(({ name }) => name === activeName)
+      if (!active) return
+      setShow(true)
+      setActive(active)
+    },
+  })
+
   return (
     <>
-      <DesktopIcon name="此电脑" src={require('@/assets/img/desktop/Computer.png')} onClick={() => {}} />
-      <DesktopIcon name="回收站" src={require('@/assets/img/desktop/Trash Full.png')} onClick={() => {}} />
-      <DesktopIcon name="网络" src={require('@/assets/img/desktop/Network.png')} onClick={() => {}} />
-      <DesktopIcon name="控制面板" src={require('@/assets/img/desktop/Control Panel.png')} onClick={() => {}} />
-      <DesktopIcon name="CVopen" src={require('@/assets/img/desktop/Explorer.png')} onClick={() => {}} />
-      <DesktopIcon name="Microsoft Edge" src={require('@/assets/img/desktop/edge browser.png')} onClick={() => {}} />
-      <DesktopIcon name="Github" src={require('@/assets/img/desktop/github.png')} onClick={() => {}} />
+      {config.map(({ name, src }) => (
+        <DesktopIcon
+          key={src}
+          name={name}
+          src={src}
+          onClick={() => {
+            console.log(name)
+          }}
+        />
+      ))}
+      <MenuIcon isShow={isShow} active={active} />
     </>
   )
 }

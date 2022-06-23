@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { Circle, Div, LoadingProps } from './type-css'
 
-function Loading({ style, fill, stroke }: LoadingProps) {
+function Loading({ style, fill = 'transparent', stroke }: LoadingProps) {
   return (
     <Div style={style}>
       <svg height={48} width={48} viewBox="0 0 16 16">

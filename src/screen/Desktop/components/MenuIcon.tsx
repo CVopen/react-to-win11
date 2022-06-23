@@ -2,15 +2,15 @@ import React, { memo } from 'react'
 
 import Menu from '@/components/Menu'
 
-function index() {
+function index({ isShow, active }: { isShow: boolean; active: { name: string; src: string } }) {
   return (
-    <Menu>
+    <Menu show={isShow}>
       <div
         onClick={(e) => {
-          console.log('desktop')
+          console.log('desktop icon')
         }}
       >
-        desktop
+        desktop icon
       </div>
     </Menu>
   )
