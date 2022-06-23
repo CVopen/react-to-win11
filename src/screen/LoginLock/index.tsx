@@ -48,7 +48,7 @@ const LoginScreen = memo(({ isLogin }: { isLogin: boolean }) => {
 
   return (
     <LoginScreenDiv style={isLogin ? {} : { display: 'none' }}>
-      <div>
+      <div className="login-form">
         <Image width={200} height={200} src={require('../../assets/avatar.jpg')} style={{ borderRadius: '50%' }} />
         <p>CVopen</p>
         <Input

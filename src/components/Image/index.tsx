@@ -27,7 +27,7 @@ function index(props: IImageProps) {
       {status === 'fail' ? (
         <span style={{ color: '#fff', lineHeight: `${props.width}px`, fontSize: '1.5rem' }}>😢</span>
       ) : (
-        <Loading fill="#5f5f5f" />
+        <Loading />
       )}
     </LoadingDiv>
   )
