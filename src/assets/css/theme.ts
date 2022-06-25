@@ -1,6 +1,7 @@
 const darkTheme = {
   theme: '#202020',
-  themeOpacity: 'rgba(32, 32, 32, .75)',
+  themeColor: '#4cc2ff',
+  themeOpacity: 'rgba(32, 32, 32, .8)',
   fontColor: '#fff',
   inputborderColor: 'rgba(255, 255, 255, 0.2)',
   borderRadiusLarge: '6px',
@@ -10,6 +11,7 @@ const darkTheme = {
 
 const lightTheme = {
   theme: '#f1f3f7',
+  themeColor: '#4cc2ff',
   themeOpacity: '#202020',
   fontColor: '#000',
   inputborderColor: 'rgba(255, 255, 255, 0.2)',

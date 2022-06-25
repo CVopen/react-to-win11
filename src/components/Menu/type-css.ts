@@ -12,11 +12,20 @@ interface IPosition {
   Y: number
 }
 
+export interface IState {
+  X: number
+  Y: number
+  exist: boolean
+}
+
 export const MenuDiv = styled.div`
   width: 240px;
-  background-color: red;
+  background: ${(props) => props.theme.themeOpacity};
+  color: ${(props) => props.theme.fontColor};
   position: fixed;
   top: ${({ Y }: IPosition) => `${Y}px`};
   left: ${({ X }: IPosition) => `${X}px`};
   user-select: none;
+  border-radius: ${(props) => props.theme.borderRadiusLarge};
+  font-size: 0.8rem;
 `

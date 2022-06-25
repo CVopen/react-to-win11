@@ -21,7 +21,7 @@ export interface IDesktopIconProps {
 
 export const DeskTopIconDiv = styled.div`
   width: ${({ size }: DivProps) => `${size === 'large' ? 104 : 74}px`};
-  height: ${({ size }: DivProps) => `${size === 'large' ? 124 : 86}px`};
+  height: ${({ size }: DivProps) => `${size === 'large' ? 124 : 90}px`};
   border-radius: ${(props) => props.theme.borderRadiusMiddle};
   margin-top: 5px;
   &:hover {

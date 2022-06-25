@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, createContext } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 export interface IMenuState {
   isShow: boolean
@@ -6,7 +6,7 @@ export interface IMenuState {
   clientY: number
 }
 
-export default function useContextmenu<T>() {
+export default function useContextmenu<T>(): { menuRef: React.MutableRefObject<T | null> } & IMenuState {
   const menuRef = useRef<T | null>(null)
 
   const [menuState, setMenuState] = useState<IMenuState>({ isShow: false, clientX: 0, clientY: 0 })
