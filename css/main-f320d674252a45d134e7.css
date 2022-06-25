@@ -136,5 +136,8 @@ table {
   height: 100%;
 }
 
+img {
+  pointer-events: none;
+}
 
-/*# sourceMappingURL=main-f8ebcfb8e76d9ec53601.css.map*/
+/*# sourceMappingURL=main-f320d674252a45d134e7.css.map*/
