@@ -1,33 +1,37 @@
+import React, { memo, useContext, useRef } from 'react'
+import ReactDOM from 'react-dom'
+
+import useStatusEff from '@/hooks/useStatusEff'
 import { MenuContext } from '@/screen/Desktop'
 import { clacMenuPosition } from '@/utils'
-import React, { memo, useContext, useEffect, useRef, useState } from 'react'
-import ReactDOM from 'react-dom'
-import { IMenuProps, MenuDiv } from './type-css'
+import { IMenuProps, IState, MenuDiv } from './type-css'
 
 const Menu = (props: IMenuProps) => {
   const { isShow, clientX, clientY } = useContext(MenuContext)
   const ref = useRef<HTMLDivElement | null>(null)
-  const [refExist, setRefExist] = useState({ X: -1000, Y: -1000, exist: false })
 
-  useEffect(() => {
+  const effect = () => {
     if (!ref.current) return
+
+    const setStatus = (show: boolean) => {
+      if (!show) return setRefExist({ X: -1000, Y: -1000, exist: true })
+      setRefExist({
+        ...clacMenuPosition({ X: clientX, Y: clientY, W: ref.current!.clientWidth, H: ref.current!.clientHeight }),
+        exist: true,
+      })
+    }
     if (typeof props.show === 'boolean') {
       setStatus(props.show)
     } else {
       setStatus(isShow)
     }
-  }, [ref.current, clientX, clientY, isShow, props.show])
-
-  const setStatus = (show: boolean) => {
-    if (show) {
-      setRefExist({
-        ...clacMenuPosition({ X: clientX, Y: clientY, W: ref.current!.clientWidth, H: ref.current!.clientHeight }),
-        exist: true,
-      })
-    } else {
-      setRefExist({ X: -1000, Y: -1000, exist: true })
-    }
   }
+
+  const [refExist, setRefExist] = useStatusEff<IState>(
+    { X: -1000, Y: -1000, exist: false },
+    [ref.current, clientX, clientY, isShow, props.show],
+    effect,
+  )
 
   if (typeof props.show === 'boolean') {
     if (!props.show && !refExist.exist) return null

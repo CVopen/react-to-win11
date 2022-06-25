@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react'
 import DesktopIcon from '@/components/DesktopIcon'
 import MenuIcon from './MenuIcon'
 import useEvent from '@/hooks/useEvent'
+import { DesktopIconDiv } from '../type-css'
 
 function DesktopIconList() {
   const config = [
@@ -45,7 +46,7 @@ function DesktopIconList() {
 
   useEvent({
     eventName: 'contextmenu',
-    cb: (e) => {
+    cb(e) {
       const activeName = (e.target as HTMLElement).dataset.name
       if (!activeName) return setShow(false)
       const active = config.find(({ name }) => name === activeName)
@@ -56,7 +57,7 @@ function DesktopIconList() {
   })
 
   return (
-    <>
+    <DesktopIconDiv>
       {config.map(({ name, src }) => (
         <DesktopIcon
           key={src}
@@ -68,7 +69,7 @@ function DesktopIconList() {
         />
       ))}
       <MenuIcon isShow={isShow} active={active} />
-    </>
+    </DesktopIconDiv>
   )
 }
 

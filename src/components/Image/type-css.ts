@@ -3,8 +3,8 @@ import styled, { CSSProperties } from 'styled-components'
 
 export interface IImgProps {
   fits?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
-  width: number
-  height: number
+  width?: number
+  height?: number
 }
 
 export interface IImageProps extends IImgProps {

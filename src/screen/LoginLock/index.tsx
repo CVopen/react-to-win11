@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useState } from 'react'
 import { LockTimeDiv, LoginPage, LoginScreenDiv } from './type-css'
 import dayjs from 'dayjs'
 
@@ -8,13 +8,12 @@ import Image from '@/components/Image'
 import Input from '@/components/Input'
 import { useAppDispatch } from '@/store'
 import { wallunlock } from '@/store/win'
+import useStatusEff from '@/hooks/useStatusEff'
 
 const WeekZh = ['一', '二', '三', '四', '五', '六', '日']
 
 const LockTime = memo(() => {
-  const [showTime, setShowTime] = useState({ time: '', date: '' })
-
-  useEffect(() => {
+  const effect = () => {
     const setTime = () => {
       const nowTime = dayjs()
       setShowTime({
@@ -23,10 +22,9 @@ const LockTime = memo(() => {
       })
     }
     const tiemr = setInterval(setTime, 1000)
-    return () => {
-      clearInterval(tiemr)
-    }
-  }, [])
+    return () => clearInterval(tiemr)
+  }
+  const [showTime, setShowTime] = useStatusEff({ time: '', date: '' }, [], effect)
 
   return (
     <LockTimeDiv>
@@ -65,18 +63,13 @@ const LoginScreen = memo(({ isLogin }: { isLogin: boolean }) => {
 export default function index() {
   const [isLogin, setIsLogin] = useState(false)
 
-  const startLogin = () => {
-    setIsLogin(true)
-  }
+  const startLogin = () => setIsLogin(true)
 
   return (
     <LoginPage style={{ backgroundImage: `url(${Lock})` }} onClick={startLogin}>
       {!isLogin && <LockTime />}
       <LoginScreen isLogin={isLogin} />
-      <Icon
-        style={{ position: 'absolute', bottom: '24px', right: '24px' }}
-        src={require('../../assets/icon/status/network-wired-symbolic.svg')}
-      />
+      <Icon style={{ position: 'absolute', bottom: '24px', right: '24px' }} src="network-wired-symbolic" />
     </LoginPage>
   )
 }

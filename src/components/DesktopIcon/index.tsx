@@ -26,7 +26,9 @@ function index({ src, onClick, name }: IDesktopIconProps) {
 
   return (
     <DeskTopIconDiv data-name={name} size={desktopSize} onClick={handleClick} down={down}>
-      <img data-name={name} src={src} onMouseDown={handleMouseDown} />
+      <div onMouseDown={handleMouseDown} data-name={name}>
+        <img style={{ userSelect: 'none' }} src={src} />
+      </div>
       <p data-name={name}>{name}</p>
     </DeskTopIconDiv>
   )
