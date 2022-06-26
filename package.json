@@ -11,7 +11,8 @@
     "lint": "prettier --write . && eslint src/**",
     "prepare": "husky install",
     "gp": "gh-pages -d build -m chore(release):publish",
-    "deploy": "node ./scripts/deploy.js"
+    "deploy": "node ./scripts/deploy.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "keywords": [],
   "author": "",
