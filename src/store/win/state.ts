@@ -12,6 +12,6 @@ export interface IWinState {
 export const initialState: IWinState = {
   boot: true,
   lock: typeof session.getItem('lock') === 'boolean' ? session.getItem('lock') : true,
-  theme: session.getItem('theme') || 'darkTheme',
+  theme: session.getItem('theme') || 'lightTheme',
   desktopSize: session.getItem('desktopSize') || 'middle',
 }

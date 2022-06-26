@@ -30,6 +30,7 @@ export const TaskBarDiv = styled(CenteredDiv)`
   box-sizing: border-box;
   padding: 0 10px;
   justify-content: space-between;
+  z-index: 999;
   .task-middle {
     display: flex;
     position: absolute;
@@ -44,7 +45,7 @@ export const TaskBarDiv = styled(CenteredDiv)`
       transition: all 0.2s ease-in-out;
       border-radius: ${(props) => props.theme.borderRadiusMiddle};
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, ${(props) => (props.theme.name === 'dark' ? 0.2 : 0.8)});
       }
     }
     .task-right-up {
@@ -65,6 +66,7 @@ export const TaskBarDiv = styled(CenteredDiv)`
     .task-right-status {
       img {
         margin: 10px 4px;
+        filter: invert(${(props) => (props.theme.name === 'dark' ? 0 : 1)});
       }
     }
   }
@@ -77,9 +79,10 @@ export const TaskIconDiv = styled(CenteredDiv)`
   transition: all 0.2s ease-in-out;
   position: relative;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, ${(props) => (props.theme.name === 'dark' ? 0.2 : 0.8)});
   }
-  background-color: ${({ active }) => (active ? 'rgba(255, 255, 255, 0.2)' : '')};
+  background-color: ${({ active, theme: { name } }) =>
+    active ? `rgba(255, 255, 255, ${name === 'dark' ? 0.2 : 0.8})` : ''};
   &::after {
     content: '';
     transition: all 0.2s ease-in-out;
@@ -97,7 +100,7 @@ export const TaskIconDiv = styled(CenteredDiv)`
   }
   &:nth-child(2) {
     img {
-      filter: invert(1);
+      filter: invert(${(props) => (props.theme.name === 'dark' ? 1 : 0)});
     }
   }
 `

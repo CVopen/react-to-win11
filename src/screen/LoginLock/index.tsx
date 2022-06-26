@@ -24,7 +24,7 @@ const LockTime = memo(() => {
     const tiemr = setInterval(setTime, 1000)
     return () => clearInterval(tiemr)
   }
-  const [showTime, setShowTime] = useStatusEff({ time: '', date: '' }, [], effect)
+  const [showTime, setShowTime] = useStatusEff({ time: '', date: '' }, effect, [])
 
   return (
     <LockTimeDiv>
