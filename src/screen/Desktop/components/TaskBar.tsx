@@ -21,7 +21,7 @@ function TaskBar() {
     const tiemr = setInterval(setTime, 1000)
     return () => clearInterval(tiemr)
   }
-  const [{ time, date }, setShowTime] = useStatusEff({ time: '', date: '' }, [], effect)
+  const [{ time, date }, setShowTime] = useStatusEff({ time: '', date: '' }, effect, [])
 
   if (boot || lock) return null
   return (

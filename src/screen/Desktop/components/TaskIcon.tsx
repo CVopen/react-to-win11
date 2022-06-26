@@ -10,7 +10,8 @@ export default function TaskIcon({ src, hide }: { src: string; hide?: boolean | 
 
   const handleMouse = useCallback((e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
     setDown(e.type === 'mousedown')
-    if ((e.target as HTMLElement).className.indexOf('task-icon') !== -1 && e.target !== ref.current) {
+    const className = (e.target as HTMLElement).className
+    if (typeof className === 'string' && className.indexOf('task-icon') !== -1 && e.target !== ref.current) {
       setActive(false)
     }
   }, [])

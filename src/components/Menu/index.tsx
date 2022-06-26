@@ -27,11 +27,13 @@ const Menu = (props: IMenuProps) => {
     }
   }
 
-  const [refExist, setRefExist] = useStatusEff<IState>(
-    { X: -1000, Y: -1000, exist: false },
-    [ref.current, clientX, clientY, isShow, props.show],
-    effect,
-  )
+  const [refExist, setRefExist] = useStatusEff<IState>({ X: -1000, Y: -1000, exist: false }, effect, [
+    ref.current,
+    clientX,
+    clientY,
+    isShow,
+    props.show,
+  ])
 
   if (typeof props.show === 'boolean') {
     if (!props.show && !refExist.exist) return null

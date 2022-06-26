@@ -972,10 +972,10 @@
     "resolve-global" "1.0.0"
     "yargs" "^17.0.0"
 
-"@commitlint/config-conventional@^17.0.2":
-  "integrity" "sha512-MfP0I/JbxKkzo+HXWB7B3WstGS4BiniotU3d3xQ9gK8cR0DbeZ4MuyGCWF65YDyrcDTS3WlrJ3ndSPA1pqhoPw=="
-  "resolved" "https://registry.npmjs.org/@commitlint/config-conventional/-/config-conventional-17.0.2.tgz"
-  "version" "17.0.2"
+"@commitlint/config-conventional@^17.0.3":
+  "integrity" "sha512-HCnzTm5ATwwwzNVq5Y57poS0a1oOOcd5pc1MmBpLbGmSysc4i7F/++JuwtdFPu16sgM3H9J/j2zznRLOSGVO2A=="
+  "resolved" "https://registry.npmjs.org/@commitlint/config-conventional/-/config-conventional-17.0.3.tgz"
+  "version" "17.0.3"
   dependencies:
     "conventional-changelog-conventionalcommits" "^5.0.0"
 
@@ -1408,6 +1408,13 @@
   "integrity" "sha512-OWPWTUrY/NIrjsAPkAk1wW9LZeIjSvkXRhclsFO8CZcZGCOg2G0YZy4ft+rOyYxy8B7ui5iZzi9OkDebZ7/QSA=="
   "resolved" "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.0.5.tgz"
   "version" "18.0.5"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-resizable@^3.0.1":
+  "integrity" "sha512-3Wpj2j1XH+FrjTOb4C8K3e66XfJYTKAtZO7RUq3oTPEFiWsvsOijAheIgwyLMmrym4+Ky0CwFFh6OvEIV4DMng=="
+  "resolved" "https://registry.npmjs.org/@types/react-resizable/-/react-resizable-3.0.1.tgz"
+  "version" "3.0.1"
   dependencies:
     "@types/react" "*"
 
@@ -2283,6 +2290,11 @@
     "is-plain-object" "^2.0.4"
     "kind-of" "^6.0.2"
     "shallow-clone" "^3.0.0"
+
+"clsx@^1.1.1":
+  "integrity" "sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA=="
+  "resolved" "https://registry.npmjs.org/clsx/-/clsx-1.1.1.tgz"
+  "version" "1.1.1"
 
 "color-convert@^1.9.0":
   "integrity" "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg=="
@@ -4788,7 +4800,7 @@
   "resolved" "https://registry.npmjs.org/progress/-/progress-2.0.3.tgz"
   "version" "2.0.3"
 
-"prop-types@^15.8.1":
+"prop-types@^15.8.1", "prop-types@15.x":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -4852,13 +4864,26 @@
     "iconv-lite" "0.4.24"
     "unpipe" "1.0.0"
 
-"react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^18.1.0", "react-dom@>= 16.8.0":
+"re-resizable@^6.9.9":
+  "integrity" "sha512-l+MBlKZffv/SicxDySKEEh42hR6m5bAHfNu3Tvxks2c4Ah+ldnWjfnVRwxo/nxF27SsUsxDS0raAzFuJNKABXA=="
+  "resolved" "https://registry.npmjs.org/re-resizable/-/re-resizable-6.9.9.tgz"
+  "version" "6.9.9"
+
+"react-dom@^16.13.1 || ^17.0.0 || ^18.0.0", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^18.1.0", "react-dom@>= 16.3.0", "react-dom@>= 16.8.0":
   "integrity" "sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.1.0.tgz"
   "version" "18.1.0"
   dependencies:
     "loose-envify" "^1.1.0"
     "scheduler" "^0.22.0"
+
+"react-draggable@^4.0.3":
+  "integrity" "sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g=="
+  "resolved" "https://registry.npmjs.org/react-draggable/-/react-draggable-4.4.5.tgz"
+  "version" "4.4.5"
+  dependencies:
+    "clsx" "^1.1.1"
+    "prop-types" "^15.8.1"
 
 "react-error-boundary@^3.1.4":
   "integrity" "sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA=="
@@ -4899,7 +4924,15 @@
   "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.11.0.tgz"
   "version" "0.11.0"
 
-"react@*", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^18.1.0", "react@>= 16.8.0", "react@>=16.13.1":
+"react-resizable@^3.0.4":
+  "integrity" "sha512-StnwmiESiamNzdRHbSSvA65b0ZQJ7eVQpPusrSmcpyGKzC0gojhtO62xxH6YOBmepk9dQTBi9yxidL3W4s3EBA=="
+  "resolved" "https://registry.npmjs.org/react-resizable/-/react-resizable-3.0.4.tgz"
+  "version" "3.0.4"
+  dependencies:
+    "prop-types" "15.x"
+    "react-draggable" "^4.0.3"
+
+"react@*", "react@^16.13.1 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^18.1.0", "react@>= 16.3", "react@>= 16.3.0", "react@>= 16.8.0", "react@>=16.13.1":
   "integrity" "sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.1.0.tgz"
   "version" "18.1.0"
