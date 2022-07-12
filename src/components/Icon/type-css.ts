@@ -10,6 +10,7 @@ export interface IIcon {
   src: string
   style?: CSSProperties
   size?: 'large' | 'middle' | 'small'
+  status?: 'status' | 'actions'
 }
 
 export const ImgIcon = styled.img`
