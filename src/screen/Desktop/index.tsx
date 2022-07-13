@@ -28,7 +28,7 @@ export default function index() {
           <Menu />
           <TaskBar />
           <AppShell>
-            <div style={{ background: '#000', height: '100%' }}>center</div>
+            <div style={{ height: '100%', background: '#fff' }}>center</div>
           </AppShell>
         </MenuContext.Provider>
       </Suspense>

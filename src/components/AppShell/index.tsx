@@ -1,9 +1,11 @@
 /* eslint-disable max-params */
-import React, { useCallback, useRef } from 'react'
-import { Resizable } from 're-resizable'
-import { IShellProps, ShellDiv } from './type-css'
+import React, { memo, MutableRefObject, useCallback, useRef, useState } from 'react'
+import { NumberSize, Resizable } from 're-resizable'
+import { IGlobalRef, IShellProps, ShellDiv, SplitSetHandlerType } from './type-css'
 import useStatusEff from '@/hooks/useStatusEff'
 import Icon from '../Icon'
+import { Direction } from 're-resizable/lib/resizer'
+import SplitScreen from './SplitScreen'
 
 const enable = { right: true, bottom: true, bottomRight: true }
 
@@ -14,18 +16,14 @@ function computedTransform(dom: HTMLDivElement): [number, number] {
   return [Number(transform[4]), Number(transform[5])]
 }
 
-export default function index({
-  children,
-  width,
-  height,
-  minWidth = 320,
-  minHeight = 200,
-  time = 300,
-  top = 100,
-  left = 100,
-}: IShellProps) {
-  const isMove = useRef({ isMove: false, x: left, y: top, resizePosition: false, isFristMove: true })
+const minWidth = 360
+const minHeight = 300
+
+function index({ children, width, height, time = 300, top = 100, left = 100 }: IShellProps) {
+  const isMove = useRef({ isMove: false, x: left, y: top, resizePosition: false })
   const shellRef = useRef<HTMLDivElement | null>(null)
+
+  const splitShellRef = useRef() as MutableRefObject<IGlobalRef>
 
   const effect = () => {
     if (!size.animate) return
@@ -39,7 +37,7 @@ export default function index({
     effect,
   )
 
-  const prevPosition = useRef({ x: left, y: top, w: size.width, h: size.height, full: false })
+  const prevPosition = useRef({ x: 0, y: 0, w: size.width, h: size.height, full: false })
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -57,12 +55,12 @@ export default function index({
   )
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!isMove.current.isMove) return
+    if (!isMove.current.isMove || !(e.target as HTMLElement).className) return
 
     const { clientX, clientY } = e
     const x = clientX - isMove.current.x
     const y = clientY - isMove.current.y
-    ;(shellRef.current as HTMLDivElement).style.transform = `translate(${x}px, ${y}px)`
+    shellRef.current!.style.transform = `translate(${x}px, ${y}px)`
     prevPosition.current.x = x
     prevPosition.current.y = y
   }, [])
@@ -75,18 +73,40 @@ export default function index({
     e.stopPropagation()
     isMove.current.resizePosition = true
     if (prevPosition.current.full) {
-      if (isMove.current.isFristMove) {
-        isMove.current.resizePosition = false
-      }
       setSize({ width: prevPosition.current.w, height: prevPosition.current.h, animate: true })
-      ;(
-        shellRef.current as HTMLDivElement
-      ).style.transform = `translate(${prevPosition.current.x}px, ${prevPosition.current.y}px)`
+      isMove.current.resizePosition = false
+      shellRef.current!.style.transform = `translate(${prevPosition.current.x}px, ${prevPosition.current.y}px)`
     } else {
       setSize({ width: window.innerWidth, height: window.innerHeight - 48, animate: true })
-      ;(shellRef.current as HTMLDivElement).style.transform = ''
+      shellRef.current!.style.transform = ''
     }
     prevPosition.current.full = !prevPosition.current.full
+  }, [])
+
+  const onResizeStop = useCallback(
+    (e: MouseEvent | TouchEvent, di: Direction, r: HTMLElement, d: NumberSize) => {
+      d.width += size.width
+      d.height += size.height
+      setSize({ ...size, ...d })
+      prevPosition.current.w = d.width
+      prevPosition.current.h = d.height
+      prevPosition.current.full = false
+    },
+    [size],
+  )
+
+  const splitMouseHandler = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.type === 'mouseenter') {
+      splitShellRef.current?.enter()
+    } else {
+      splitShellRef.current?.leave()
+    }
+  }, [])
+
+  const splitSetSize = useCallback<SplitSetHandlerType>(({ width, height, x, y }) => {
+    isMove.current.resizePosition = true
+    setSize({ width, height, animate: true })
+    shellRef.current!.style.transform = `translate(${x}px, ${y}px)`
   }, [])
 
   return (
@@ -106,14 +126,7 @@ export default function index({
         maxWidth={window.innerWidth}
         minHeight={minHeight}
         maxHeight={window.innerHeight - 48}
-        onResizeStop={(e, direction, ref, d) => {
-          d.width += size.width
-          d.height += size.height
-          setSize({ ...size, ...d })
-          prevPosition.current.w = d.width
-          prevPosition.current.h = d.height
-          prevPosition.current.full = false
-        }}
+        onResizeStop={onResizeStop}
       >
         <div
           className="shell-header"
@@ -127,7 +140,7 @@ export default function index({
             <div>
               <Icon src="window-minimize-symbolic" size="small" status="actions" />
             </div>
-            <div className="" onClick={handleFull}>
+            <div onClick={handleFull} onMouseEnter={splitMouseHandler} onMouseLeave={splitMouseHandler}>
               {prevPosition.current.full ? (
                 <Icon src="window-restore-symbolic" size="small" status="actions" />
               ) : (
@@ -139,17 +152,11 @@ export default function index({
             </div>
           </div>
         </div>
-        <button
-          onClick={() => {
-            isMove.current.resizePosition = true
-            setSize({ width: window.innerWidth / 2, height: window.innerHeight - 48, animate: true })
-            ;(shellRef.current as HTMLDivElement).style.transform = ''
-          }}
-        >
-          点我
-        </button>
         {children}
+        <SplitScreen ref={splitShellRef} splitSetSize={splitSetSize} />
       </Resizable>
     </ShellDiv>
   )
 }
+
+export default memo(index)

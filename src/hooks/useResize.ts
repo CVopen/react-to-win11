@@ -31,7 +31,7 @@ export default function useResize() {
   }
 
   const handleError = useCallback(() => {
-    if (window.innerWidth >= 1440) return
+    if (window.innerWidth >= 1440 && window.innerHeight >= 650) return
     setError(true)
   }, [])
 

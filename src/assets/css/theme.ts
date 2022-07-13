@@ -8,18 +8,24 @@ const darkTheme = {
   borderRadiusLarge: '6px',
   borderRadiusMiddle: '4px',
   borderRadiusSmall: '2px',
+  transitionSlow: '.2s',
+  transitionMiddle: '.4s',
+  transitionFast: '.8s',
 }
 
 const lightTheme = {
   name: 'light',
   theme: '#f1f3f7',
   themeColor: '#4cc2ff',
-  themeOpacity: 'rgba(220, 236, 238, .9)',
+  themeOpacity: 'rgba(240, 236, 238, .9)',
   fontColor: '#000',
   inputborderColor: 'rgba(255, 255, 255, 0.2)',
   borderRadiusLarge: '6px',
   borderRadiusMiddle: '4px',
   borderRadiusSmall: '2px',
+  transitionSlow: '.2s',
+  transitionMiddle: '.4s',
+  transitionFast: '.8s',
 }
 
 export default { darkTheme, lightTheme }

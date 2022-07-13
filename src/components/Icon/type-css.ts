@@ -14,7 +14,7 @@ export interface IIcon {
 }
 
 export const ImgIcon = styled.img`
-  transition: 0.2s all;
+  transition: all ${(props) => props.theme.transitionSlow};
   width: ${({ size }: { size: string }) => size};
   height: ${({ size }: { size: string }) => size}; ;
 `

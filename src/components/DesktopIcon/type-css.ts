@@ -34,7 +34,7 @@ export const DeskTopIconDiv = styled.div`
   justify-content: center;
   img {
     width: ${({ size }: DivProps) => `${Size[size]}`};
-    transition: all 0.4s;
+    transition: all ${(props) => props.theme.transitionMiddle};
     transform: ${({ down }: DivProps) => `scale(${down ? 0.7 : 1})`};
   }
   p {
