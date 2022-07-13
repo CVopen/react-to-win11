@@ -1,8 +1,18 @@
 /* eslint-disable max-params */
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { Resizable } from 're-resizable'
 import { IShellProps, ShellDiv } from './type-css'
 import useStatusEff from '@/hooks/useStatusEff'
+import Icon from '../Icon'
+
+const enable = { right: true, bottom: true, bottomRight: true }
+
+function computedTransform(dom: HTMLDivElement): [number, number] {
+  let transform: string | string[] = getComputedStyle(dom, null).transform
+  if (transform === 'none') transform = '0,0,0,0,0,0)'
+  transform = transform.slice(0, transform.length - 1).split(',')
+  return [Number(transform[4]), Number(transform[5])]
+}
 
 export default function index({
   children,
@@ -14,60 +24,84 @@ export default function index({
   top = 100,
   left = 100,
 }: IShellProps) {
-  const isMove = useRef({ isMove: false, x: 100, y: 100 })
+  const isMove = useRef({ isMove: false, x: left, y: top, resizePosition: false, isFristMove: true })
   const shellRef = useRef<HTMLDivElement | null>(null)
-  const resizePosition = useRef(false)
-  const [size, setSize] = useState({ width: width || minWidth, height: height || minHeight })
 
   const effect = () => {
-    if (!animate) return
-    setTimeout(setAnimate, time)
+    if (!size.animate) return
+    setTimeout(() => {
+      setSize({ ...size, animate: false })
+    }, time)
   }
 
-  const [animate, setAnimate] = useStatusEff<boolean | undefined>(false, effect)
+  const [size, setSize] = useStatusEff(
+    { width: width || minWidth, height: height || minHeight, animate: false },
+    effect,
+  )
+
+  const prevPosition = useRef({ x: left, y: top, w: size.width, h: size.height, full: false })
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (animate) return
+      if (size.animate) return
       const { clientX, clientY } = e
-      let transform: string | string[] = getComputedStyle(shellRef.current as HTMLDivElement, null).transform
-      if (transform === 'none') transform = '0,0,0,0,0,0)'
-      transform = transform.slice(0, transform.length - 1).split(',')
+      const [x, y] = computedTransform(shellRef.current as HTMLDivElement)
       isMove.current = {
+        ...isMove.current,
         isMove: true,
-        x: clientX - Number(transform[4]),
-        y: clientY - Number(transform[5]),
+        x: clientX - x,
+        y: clientY - y,
       }
     },
-    [animate],
+    [size.animate],
   )
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMove.current.isMove) return
+
     const { clientX, clientY } = e
-    const top = clientY - isMove.current.y
-    const left = clientX - isMove.current.x
-    ;(shellRef.current as HTMLDivElement).style.transform = `translate(${left}px, ${top}px)`
+    const x = clientX - isMove.current.x
+    const y = clientY - isMove.current.y
+    ;(shellRef.current as HTMLDivElement).style.transform = `translate(${x}px, ${y}px)`
+    prevPosition.current.x = x
+    prevPosition.current.y = y
   }, [])
 
   const handleClearMove = useCallback(() => {
     isMove.current.isMove = false
   }, [])
 
+  const handleFull = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    isMove.current.resizePosition = true
+    if (prevPosition.current.full) {
+      if (isMove.current.isFristMove) {
+        isMove.current.resizePosition = false
+      }
+      setSize({ width: prevPosition.current.w, height: prevPosition.current.h, animate: true })
+      ;(
+        shellRef.current as HTMLDivElement
+      ).style.transform = `translate(${prevPosition.current.x}px, ${prevPosition.current.y}px)`
+    } else {
+      setSize({ width: window.innerWidth, height: window.innerHeight - 48, animate: true })
+      ;(shellRef.current as HTMLDivElement).style.transform = ''
+    }
+    prevPosition.current.full = !prevPosition.current.full
+  }, [])
+
   return (
     <ShellDiv
       ref={shellRef}
       style={{
-        transform: animate ? 'translate(0, 0)' : '',
-        transition: animate ? `all ${time}ms` : '',
-        top: resizePosition.current ? 0 : top,
-        left: resizePosition.current ? 0 : left,
+        transition: size.animate ? `all ${time}ms` : '',
+        top: isMove.current.resizePosition ? 0 : top,
+        left: isMove.current.resizePosition ? 0 : left,
       }}
     >
       <Resizable
         size={size}
-        style={{ transition: animate ? `all ${time}ms` : '' }}
-        enable={{ right: !animate, bottom: !animate, bottomRight: !animate }}
+        style={{ transition: size.animate ? `all ${time}ms` : '' }}
+        enable={enable}
         minWidth={minWidth}
         maxWidth={window.innerWidth}
         minHeight={minHeight}
@@ -75,7 +109,10 @@ export default function index({
         onResizeStop={(e, direction, ref, d) => {
           d.width += size.width
           d.height += size.height
-          setSize(d)
+          setSize({ ...size, ...d })
+          prevPosition.current.w = d.width
+          prevPosition.current.h = d.height
+          prevPosition.current.full = false
         }}
       >
         <div
@@ -85,13 +122,28 @@ export default function index({
           onMouseLeave={handleClearMove}
           onMouseUp={handleClearMove}
         >
-          header
+          <div>header</div>
+          <div className="shell-header-status">
+            <div>
+              <Icon src="window-minimize-symbolic" size="small" status="actions" />
+            </div>
+            <div className="" onClick={handleFull}>
+              {prevPosition.current.full ? (
+                <Icon src="window-restore-symbolic" size="small" status="actions" />
+              ) : (
+                <Icon src="window-maximize-symbolic" size="small" status="actions" />
+              )}
+            </div>
+            <div>
+              <Icon src="window-close-symbolic" size="small" status="actions" />
+            </div>
+          </div>
         </div>
         <button
           onClick={() => {
-            setAnimate(true)
-            resizePosition.current = true
-            setSize({ width: window.innerWidth / 2, height: window.innerHeight - 48 })
+            isMove.current.resizePosition = true
+            setSize({ width: window.innerWidth / 2, height: window.innerHeight - 48, animate: true })
+            ;(shellRef.current as HTMLDivElement).style.transform = ''
           }}
         >
           点我
