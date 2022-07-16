@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { desktopS } from '@/store/win/state'
+import { TdesktopS } from '@/store/win/state'
 
 export enum Size {
   small = '40px',
@@ -9,12 +9,11 @@ export enum Size {
 }
 
 interface DivProps {
-  size: desktopS
+  size: TdesktopS
   down: boolean
 }
 
 export interface IDesktopIconProps {
-  onClick: (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   src: string
   name: string
 }

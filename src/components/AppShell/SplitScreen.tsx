@@ -117,19 +117,22 @@ const SplitScreen = forwardRef((props: ISplitProps, ref) => {
     timer.current = null
   }
 
-  const hide = () => {
+  const hide = (offHand?: boolean) => {
     screenRef.current!.style.opacity = '0'
     clear()
-    timer.current = setTimeout(() => {
-      screenRef.current!.style.height = '0'
-      screenRef.current!.style.paddingTop = '0'
-      clear()
-    }, 200)
+    timer.current = setTimeout(
+      () => {
+        screenRef.current!.style.height = '0'
+        screenRef.current!.style.paddingTop = '0'
+        clear()
+      },
+      offHand ? 400 : 0,
+    )
   }
 
   const leave = () => {
     clear()
-    timer.current = setTimeout(hide, 500)
+    timer.current = setTimeout(hide, 1000)
   }
 
   useImperativeHandle(ref as MutableRefObject<IGlobalRef>, () => ({
@@ -140,24 +143,20 @@ const SplitScreen = forwardRef((props: ISplitProps, ref) => {
         screenRef.current!.style.paddingTop = '10px'
         screenRef.current!.style.opacity = '1'
         clear()
-      }, 500)
+      }, 1000)
     },
     leave,
+    hide,
   }))
 
+  const clickHandle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const index = Array.from(document.getElementsByClassName('mode-block')).findIndex((item) => item === e.target)
+    props.splitSetSize(size[index])
+    hide(true)
+  }
+
   return (
-    <div
-      className="shell-split-screen"
-      onClick={(e) => {
-        const index = Array.from(document.getElementsByClassName('mode-block')).findIndex((item) => item === e.target)
-        console.log(e.target, index, size[index])
-        props.splitSetSize(size[index])
-        hide()
-      }}
-      ref={screenRef}
-      onMouseEnter={clear}
-      onMouseLeave={leave}
-    >
+    <div className="shell-split-screen" ref={screenRef} onClick={clickHandle} onMouseEnter={clear} onMouseLeave={leave}>
       <div className="shell-split-screen-mode mode-one">
         <div className="mode-block block-radius-tl block-radius-bl" />
         <div className="mode-block block-radius-tr block-radius-br" />

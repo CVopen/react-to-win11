@@ -1,11 +1,14 @@
 /* eslint-disable max-params */
-import React, { memo, MutableRefObject, useCallback, useRef, useState } from 'react'
+import React, { memo, MutableRefObject, useCallback, useRef } from 'react'
 import { NumberSize, Resizable } from 're-resizable'
 import { IGlobalRef, IShellProps, ShellDiv, SplitSetHandlerType } from './type-css'
 import useStatusEff from '@/hooks/useStatusEff'
 import Icon from '../Icon'
 import { Direction } from 're-resizable/lib/resizer'
 import SplitScreen from './SplitScreen'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { changeAppActive } from '@/store/win'
+import { explorerList } from '@/utils'
 
 const enable = { right: true, bottom: true, bottomRight: true }
 
@@ -19,11 +22,14 @@ function computedTransform(dom: HTMLDivElement): [number, number] {
 const minWidth = 360
 const minHeight = 300
 
-function index({ children, width, height, time = 300, top = 100, left = 100 }: IShellProps) {
+function index({ children, width, height, name, time = 300, top = 100, left = 100 }: IShellProps) {
   const isMove = useRef({ isMove: false, x: left, y: top, resizePosition: false })
   const shellRef = useRef<HTMLDivElement | null>(null)
 
   const splitShellRef = useRef() as MutableRefObject<IGlobalRef>
+
+  const { activeApp } = useAppSelector(({ win }) => win)
+  const dispatch = useAppDispatch()
 
   const effect = () => {
     if (!size.animate) return
@@ -39,9 +45,12 @@ function index({ children, width, height, time = 300, top = 100, left = 100 }: I
 
   const prevPosition = useRef({ x: 0, y: 0, w: size.width, h: size.height, full: false })
 
+  const appActive = useCallback(() => dispatch(changeAppActive(name)), [])
+
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (size.animate) return
+      appActive()
       const { clientX, clientY } = e
       const [x, y] = computedTransform(shellRef.current as HTMLDivElement)
       isMove.current = {
@@ -69,7 +78,7 @@ function index({ children, width, height, time = 300, top = 100, left = 100 }: I
     isMove.current.isMove = false
   }, [])
 
-  const handleFull = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleFull = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     e.stopPropagation()
     isMove.current.resizePosition = true
     if (prevPosition.current.full) {
@@ -81,6 +90,7 @@ function index({ children, width, height, time = 300, top = 100, left = 100 }: I
       shellRef.current!.style.transform = ''
     }
     prevPosition.current.full = !prevPosition.current.full
+    splitShellRef.current.hide(true)
   }, [])
 
   const onResizeStop = useCallback(
@@ -95,18 +105,15 @@ function index({ children, width, height, time = 300, top = 100, left = 100 }: I
     [size],
   )
 
-  const splitMouseHandler = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.type === 'mouseenter') {
-      splitShellRef.current?.enter()
-    } else {
-      splitShellRef.current?.leave()
-    }
+  const splitMouseHandler = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    splitShellRef.current[e.type === 'mouseenter' ? 'enter' : 'leave']()
   }, [])
 
   const splitSetSize = useCallback<SplitSetHandlerType>(({ width, height, x, y }) => {
     isMove.current.resizePosition = true
     setSize({ width, height, animate: true })
     shellRef.current!.style.transform = `translate(${x}px, ${y}px)`
+    prevPosition.current.full = false
   }, [])
 
   return (
@@ -116,7 +123,9 @@ function index({ children, width, height, time = 300, top = 100, left = 100 }: I
         transition: size.animate ? `all ${time}ms` : '',
         top: isMove.current.resizePosition ? 0 : top,
         left: isMove.current.resizePosition ? 0 : left,
+        zIndex: activeApp === name ? 2 : 1,
       }}
+      onClick={appActive}
     >
       <Resizable
         size={size}
@@ -127,6 +136,9 @@ function index({ children, width, height, time = 300, top = 100, left = 100 }: I
         minHeight={minHeight}
         maxHeight={window.innerHeight - 48}
         onResizeStop={onResizeStop}
+        onResize={function () {
+          console.log(arguments)
+        }}
       >
         <div
           className="shell-header"
@@ -137,22 +149,29 @@ function index({ children, width, height, time = 300, top = 100, left = 100 }: I
         >
           <div>header</div>
           <div className="shell-header-status">
-            <div>
-              <Icon src="window-minimize-symbolic" size="small" status="actions" />
-            </div>
-            <div onClick={handleFull} onMouseEnter={splitMouseHandler} onMouseLeave={splitMouseHandler}>
-              {prevPosition.current.full ? (
-                <Icon src="window-restore-symbolic" size="small" status="actions" />
-              ) : (
-                <Icon src="window-maximize-symbolic" size="small" status="actions" />
-              )}
-            </div>
-            <div>
-              <Icon src="window-close-symbolic" size="small" status="actions" />
-            </div>
+            <Icon
+              src="window-minimize-symbolic"
+              size="small"
+              status="actions"
+              onClick={() => {
+                const taskBarItem = document.querySelector(
+                  `div[data-name='${explorerList.includes(name) ? 'explorer' : name}']`,
+                )
+                console.log(taskBarItem?.getBoundingClientRect())
+              }}
+            />
+            <Icon
+              src={`window-${prevPosition.current.full ? 'restore' : 'maximize'}-symbolic`}
+              size="small"
+              status="actions"
+              onClick={handleFull}
+              onMouseEnter={splitMouseHandler}
+              onMouseLeave={splitMouseHandler}
+            />
+            <Icon src="window-close-symbolic" size="small" status="actions" />
           </div>
         </div>
-        {children}
+        <div className="shell-body">{children}</div>
         <SplitScreen ref={splitShellRef} splitSetSize={splitSetSize} />
       </Resizable>
     </ShellDiv>

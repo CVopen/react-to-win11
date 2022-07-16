@@ -36,6 +36,7 @@ export const TaskBarDiv = styled(CenteredDiv)`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    transition: all ${(props) => props.theme.transitionSlow} ease-in-out;
   }
   .task-right {
     display: flex;

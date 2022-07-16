@@ -1,12 +1,16 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import Image from '@/components/Image'
 import { TaskIconDiv } from '../type-css'
 import useEvent from '@/hooks/useEvent'
+import { useAppSelector } from '@/store'
+import { explorerList } from '@/utils'
 
-export default function TaskIcon({ src, hide }: { src: string; hide?: boolean | undefined }) {
+function TaskIcon({ src, hide, name }: { src: string; hide: boolean | undefined; name?: string | undefined }) {
   const [active, setActive] = useState(false)
   const [down, setDown] = useState(false)
   const ref = useRef<HTMLDivElement | null>(null)
+
+  const { activeApp } = useAppSelector(({ win }) => win)
 
   const handleMouse = useCallback((e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
     setDown(e.type === 'mousedown')
@@ -21,6 +25,12 @@ export default function TaskIcon({ src, hide }: { src: string; hide?: boolean | 
     if (hide) return
     setActive(!active)
   }
+
+  useEffect(() => {
+    if (hide) return
+    setActive(activeApp === name || (explorerList.includes(activeApp) && name === 'explorer'))
+  }, [activeApp, hide])
+
   return (
     <TaskIconDiv
       className="task-icon"
@@ -30,8 +40,12 @@ export default function TaskIcon({ src, hide }: { src: string; hide?: boolean | 
       hide={hide}
       onMouseDown={handleMouse}
       onClick={handleClick}
+      data-src={src}
+      data-name={name}
     >
-      <Image width={24} height={24} src={require(`../../../assets/icon/task/${src}.png`)} />
+      <Image width={24} height={24} src={require(`../../../assets/icon/task/${src}.png`)} data-src={src} />
     </TaskIconDiv>
   )
 }
+
+export default memo(TaskIcon)

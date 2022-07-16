@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 export interface IShellProps {
   children: React.ReactNode | React.ReactNode[]
+  name: string
   width?: number
   height?: number
   time?: number
@@ -13,6 +14,7 @@ export interface IShellProps {
 export interface IGlobalRef {
   enter: () => void
   leave: () => void
+  hide: (offHand?: boolean) => void
 }
 
 export type SplitSetHandlerType = (params: { width: number; height: number; x: number; y: number }) => void
@@ -28,21 +30,23 @@ export const ShellDiv = styled.div`
   border-radius: ${(props) => props.theme.borderRadiusLarge};
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  .shell-body {
+    overflow: auto;
+    height: calc(100% - 30px);
+    background-color: ${(props) => (props.theme.name === 'dark' ? '#000' : '#fff')};
+  }
+  img {
+    pointer-events: auto;
+  }
   .shell-header {
     background: ${(props) => props.theme.themeOpacity};
     height: 30px;
     display: flex;
     justify-content: space-between;
     .shell-header-status {
-      display: flex;
-      div {
-        width: 50px;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        img {
-          filter: invert(${(props) => (props.theme.name === 'dark' ? 1 : 0)});
-        }
+      img {
+        filter: invert(${(props) => (props.theme.name === 'dark' ? 1 : 0)});
+        padding: 7px 17px;
         &:hover {
           background: rgba(136, 136, 136, 0.2);
         }
