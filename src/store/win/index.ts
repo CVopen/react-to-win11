@@ -12,4 +12,5 @@ export const winSlice = createSlice({
 })
 
 export default winSlice.reducer
-export const { wallunlock, changeTheme, changeDesktopSize, changeAppList, changeAppActive } = winSlice.actions
+export const { wallunlock, changeTheme, changeDesktopSize, changeAppList, changeAppActive, changeAppIsHide } =
+  winSlice.actions

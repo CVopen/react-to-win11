@@ -1,14 +1,12 @@
-import React, { memo, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
+import React, { memo, ReactNode, useMemo, useRef, useState } from 'react'
 import DesktopIcon from '@/components/DesktopIcon'
 import MenuIcon from './MenuIcon'
 import useEvent from '@/hooks/useEvent'
 import { DesktopIconDiv } from '../type-css'
 import { useAppDispatch, useAppSelector } from '@/store'
-import Explorer from '@/app/Explorer'
 import { changeAppList } from '@/store/win'
-import Edge from '@/app/Edge'
-import Music from '@/app/Music'
 import { TAppList } from '@/store/win/state'
+import { render } from './render'
 
 function DesktopIconList() {
   const dispatch = useAppDispatch()
@@ -74,28 +72,13 @@ function DesktopIconList() {
     },
   })
 
-  const render = useCallback((name: string) => {
-    const key = new Date().getTime()
-    switch (name) {
-      case 'Microsoft Edge':
-        return <Edge key={key} />
-      case '网易云':
-        return [{ src: 'wy-music', name }, <Music key={key} />]
-      case 'Github':
-        window.open('https://github.com/CVopen', '_blank')
-        isTimer.current = false
-        return null
-      default:
-        return <Explorer name={name} key={key} />
-    }
-  }, [])
-
   const renderApp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (isTimer.current) return
     isTimer.current = true
     const name = (e.target as HTMLElement).dataset.name as string
     const activeApp = activeAppList.find((item) => item.name === name)
     if (activeApp) return
+    if (name === 'Github') isTimer.current = false
     let app = render(name)
 
     if (!app) return

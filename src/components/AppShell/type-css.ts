@@ -30,10 +30,21 @@ export const ShellDiv = styled.div`
   border-radius: ${(props) => props.theme.borderRadiusLarge};
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  color: ${(props) => (props.theme.name === 'dark' ? '#fff' : '#000')};
   .shell-body {
     overflow: auto;
     height: calc(100% - 30px);
     background-color: ${(props) => (props.theme.name === 'dark' ? '#000' : '#fff')};
+    ::-webkit-scrollbar {
+      width: 14px;
+      border-left: 1px solid #fff;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: ${(props) => (props.theme.name === 'dark' ? '#000' : '#fff')};
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: ${(props) => (props.theme.name === 'dark' ? '#202b36' : '#dde7f0')};
+    }
   }
   img {
     pointer-events: auto;
@@ -52,7 +63,7 @@ export const ShellDiv = styled.div`
         }
         &:last-child {
           &:hover {
-            background: rgba(255, 0, 0, 0.8);
+            background: rgba(${(props) => (props.theme.name === 'dark' ? '0,255,255' : '255,0,0')}, 0.8);
             img {
               filter: invert(1);
             }

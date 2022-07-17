@@ -2,7 +2,7 @@ const darkTheme = {
   name: 'dark',
   theme: '#212020',
   themeColor: '#4cc2ff',
-  themeOpacity: 'rgba(32, 32, 32, .8)',
+  themeOpacity: 'rgba(32, 32, 32, .9)',
   fontColor: '#fff',
   inputborderColor: 'rgba(255, 255, 255, 0.2)',
   borderRadiusLarge: '6px',

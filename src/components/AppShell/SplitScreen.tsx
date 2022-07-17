@@ -151,7 +151,7 @@ const SplitScreen = forwardRef((props: ISplitProps, ref) => {
 
   const clickHandle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const index = Array.from(document.getElementsByClassName('mode-block')).findIndex((item) => item === e.target)
-    props.splitSetSize(size[index])
+    props.splitSetSize(size[index % 17])
     hide(true)
   }
 

@@ -4,7 +4,7 @@ import React, { memo } from 'react'
 function Edge() {
   return (
     <AppShell name="Microsoft Edge">
-      <div style={{ height: '200%', background: '#fff' }}>Edge</div>
+      <div style={{ height: '200%' }}>Edge</div>
     </AppShell>
   )
 }

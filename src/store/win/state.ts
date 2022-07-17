@@ -10,6 +10,11 @@ export interface TAppList {
   isRemove?: true
 }
 
+export interface IActiveAppList {
+  name: string
+  app: ReactNode
+  isHide: boolean
+}
 export interface IWinState {
   boot: boolean
   lock: boolean
@@ -17,7 +22,7 @@ export interface IWinState {
   desktopSize: TdesktopS
   appListTar: TAppList[]
   activeApp: string
-  activeAppList: { name: string; app: ReactNode }[]
+  activeAppList: IActiveAppList[]
 }
 
 export const initialState: IWinState = {

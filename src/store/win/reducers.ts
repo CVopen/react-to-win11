@@ -2,7 +2,7 @@ import { explorerList } from '@/utils'
 import { session } from '@/utils/storage'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { ReactNode } from 'react'
-import { TdesktopS, IWinState, TAppList } from './state'
+import { TdesktopS, IWinState, TAppList, IActiveAppList } from './state'
 
 const wallunlock = (state: IWinState) => {
   state.lock = false
@@ -21,7 +21,7 @@ const changeDesktopSize = (state: IWinState, action: PayloadAction<TdesktopS>) =
 const changeAppList = (state: IWinState, action: PayloadAction<{ info?: TAppList; app?: ReactNode; name: string }>) => {
   action.payload.info && state.appListTar.push(action.payload.info)
   state.activeApp = action.payload.name
-  action.payload.app && state.activeAppList.push({ name: state.activeApp, app: action.payload.app })
+  action.payload.app && state.activeAppList.push({ name: state.activeApp, app: action.payload.app, isHide: false })
 
   if (explorerList.includes(action.payload.name)) {
     state.appListTar[3].hide = false
@@ -41,4 +41,29 @@ const changeAppActive = (state: IWinState, action: PayloadAction<string>) => {
   state.activeApp = action.payload
 }
 
-export default { wallunlock, changeTheme, changeDesktopSize, changeAppList, changeAppActive }
+const changeAppIsHide = (state: IWinState, action: PayloadAction<string>) => {
+  const item = state.activeAppList.find(({ name }) => name === action.payload)
+  if (!item) return
+  item.isHide = !item.isHide
+
+  if (!item.isHide) {
+    state.activeApp = action.payload
+  } else {
+    if (explorerList.includes(action.payload)) {
+      const eList = state.activeAppList.reduce((target, item) => {
+        if (explorerList.includes(item.name)) target.push(item)
+        return target
+      }, [] as IActiveAppList[])
+      if (eList.length === 1) {
+        state.activeApp = ''
+      } else {
+        const nextExplorerApp = eList.find((item) => !item.isHide)
+        state.activeApp = nextExplorerApp ? nextExplorerApp.name : ''
+      }
+    } else {
+      state.activeApp = ''
+    }
+  }
+}
+
+export default { wallunlock, changeTheme, changeDesktopSize, changeAppList, changeAppActive, changeAppIsHide }
