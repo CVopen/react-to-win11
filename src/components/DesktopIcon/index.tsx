@@ -4,7 +4,7 @@ import { useAppSelector } from '@/store'
 import { DeskTopIconDiv, IDesktopIconProps } from './type-css'
 import useEvent from '@/hooks/useEvent'
 
-function index({ src, onClick, name }: IDesktopIconProps) {
+function index({ src, name }: IDesktopIconProps) {
   const { desktopSize } = useAppSelector(({ win }) => win)
   const [down, setDown] = useState(false)
 
@@ -16,13 +16,9 @@ function index({ src, onClick, name }: IDesktopIconProps) {
 
   useEvent({ eventName: 'mouseup', cb: handleMouseUp })
 
-  const handleClick = useCallback(
-    (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      setDown(false)
-      onClick(e)
-    },
-    [onclick],
-  )
+  const handleClick = useCallback((e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setDown(false)
+  }, [])
 
   return (
     <DeskTopIconDiv data-name={name} size={desktopSize} onClick={handleClick} down={down}>

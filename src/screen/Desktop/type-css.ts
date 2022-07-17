@@ -36,13 +36,14 @@ export const TaskBarDiv = styled(CenteredDiv)`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    transition: all ${(props) => props.theme.transitionSlow} ease-in-out;
   }
   .task-right {
     display: flex;
     align-items: center;
     height: 100%;
     div {
-      transition: all 0.2s ease-in-out;
+      transition: all ${(props) => props.theme.transitionSlow} ease-in-out;
       border-radius: ${(props) => props.theme.borderRadiusMiddle};
       &:hover {
         background-color: rgba(255, 255, 255, ${(props) => (props.theme.name === 'dark' ? 0.2 : 0.8)});
@@ -76,7 +77,7 @@ export const TaskIconDiv = styled(CenteredDiv)`
   width: 40px;
   height: 40px;
   border-radius: ${(props) => props.theme.borderRadiusMiddle};
-  transition: all 0.2s ease-in-out;
+  transition: all ${(props) => props.theme.transitionSlow} ease-in-out;
   position: relative;
   &:hover {
     background-color: rgba(255, 255, 255, ${(props) => (props.theme.name === 'dark' ? 0.2 : 0.8)});
@@ -85,7 +86,7 @@ export const TaskIconDiv = styled(CenteredDiv)`
     active ? `rgba(255, 255, 255, ${name === 'dark' ? 0.2 : 0.8})` : ''};
   &::after {
     content: '';
-    transition: all 0.2s ease-in-out;
+    transition: all ${(props) => props.theme.transitionSlow} ease-in-out;
     position: absolute;
     bottom: 0;
     width: ${({ active, hide }: { active: boolean; hide: boolean | undefined; down: boolean }) =>
@@ -96,7 +97,7 @@ export const TaskIconDiv = styled(CenteredDiv)`
   }
   img {
     transform: scale(${({ down }) => (down ? 0.8 : 1)});
-    transition: all 0.2s ease-in-out;
+    transition: all ${(props) => props.theme.transitionSlow} ease-in-out;
   }
   &:nth-child(2) {
     img {

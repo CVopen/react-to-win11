@@ -9,7 +9,8 @@ import TaskIcon from './TaskIcon'
 import Icon from '@/components/Icon'
 
 function TaskBar() {
-  const { boot, lock } = useAppSelector(({ win }) => win)
+  const { boot, lock, appListTar } = useAppSelector(({ win }) => win)
+
   const effect = () => {
     const setTime = () => {
       const nowTime = dayjs()
@@ -24,17 +25,16 @@ function TaskBar() {
   const [{ time, date }, setShowTime] = useStatusEff({ time: '', date: '' }, effect, [])
 
   if (boot || lock) return null
+
   return (
     <TaskBarDiv>
       <div className="task-left">
         <TaskIcon src="widget" hide />
       </div>
-      <div className="task-middle">
-        <TaskIcon src="home" hide />
-        <TaskIcon src="search" hide />
-        <TaskIcon src="settings" hide />
-        <TaskIcon src="explorer" />
-        <TaskIcon src="edge" />
+      <div className="task-middle" style={{ width: appListTar.length * 40 }}>
+        {appListTar.map(({ src, hide, name }) => (
+          <TaskIcon key={src} src={src} hide={hide} name={name} />
+        ))}
       </div>
       <div className="task-right">
         <div className="task-right-up">

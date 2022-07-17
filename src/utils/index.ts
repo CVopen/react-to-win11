@@ -15,3 +15,5 @@ export function clacMenuPosition({ X, Y, W, H }: ICalc): { X: number; Y: number 
   }
   return { X, Y }
 }
+
+export const explorerList = ['此电脑', '回收站', '网络', '控制面板', 'CVopen']

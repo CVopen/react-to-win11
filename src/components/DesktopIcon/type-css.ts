@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { desktopS } from '@/store/win/state'
+import { TdesktopS } from '@/store/win/state'
 
 export enum Size {
   small = '40px',
@@ -9,12 +9,11 @@ export enum Size {
 }
 
 interface DivProps {
-  size: desktopS
+  size: TdesktopS
   down: boolean
 }
 
 export interface IDesktopIconProps {
-  onClick: (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   src: string
   name: string
 }
@@ -34,7 +33,7 @@ export const DeskTopIconDiv = styled.div`
   justify-content: center;
   img {
     width: ${({ size }: DivProps) => `${Size[size]}`};
-    transition: all 0.4s;
+    transition: all ${(props) => props.theme.transitionMiddle};
     transform: ${({ down }: DivProps) => `scale(${down ? 0.7 : 1})`};
   }
   p {

@@ -1,7 +1,6 @@
 import React, { createContext, lazy, Suspense } from 'react'
 import { DesktopPage } from './type-css'
 
-import AppShell from '@/components/AppShell'
 import useContextmenu, { IMenuState } from '@/hooks/useContextmenu'
 import useResize from '@/hooks/useResize'
 
@@ -27,9 +26,6 @@ export default function index() {
           <DesktopIconList />
           <Menu />
           <TaskBar />
-          <AppShell>
-            <div style={{ background: '#000', height: '100%' }}>center</div>
-          </AppShell>
         </MenuContext.Provider>
       </Suspense>
     </DesktopPage>

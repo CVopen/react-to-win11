@@ -45,7 +45,7 @@ export const Span = styled.span`
       position: absolute;
       left: 0;
       bottom: 0;
-      transition: all 0.3s;
+      transition: all ${(props) => props.theme.transitionMiddle};
       transform: scaleX(0);
     }
   }
@@ -61,7 +61,7 @@ export const IconSpan = styled.span`
   padding: 4px;
   box-sizing: border-box;
   color: #b5b5b5;
-  transition: all 0.2s;
+  transition: all ${(props) => props.theme.transitionSlow};
   border-radius: ${(props) => props.theme.borderRadiusSmall};
   &:hover {
     background-color: ${(props) => props.theme.inputborderColor};
