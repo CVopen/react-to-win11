@@ -7,7 +7,7 @@ import Icon from '../Icon'
 import { Direction } from 're-resizable/lib/resizer'
 import SplitScreen from './SplitScreen'
 import { useAppDispatch, useAppSelector } from '@/store'
-import { changeAppActive, changeAppIsHide } from '@/store/win'
+import { changeAppActive, changeAppIsHide, closeApp } from '@/store/win'
 import { explorerList } from '@/utils'
 
 function computedTransform(dom: HTMLDivElement): [number, number] {
@@ -20,19 +20,23 @@ function computedTransform(dom: HTMLDivElement): [number, number] {
 const minWidth = 360
 const minHeight = 300
 
-function index({ children, width, height, name, time = 300, top = 100, left = 100 }: IShellProps) {
+function index({ children, width, height, name, top = 100, left = 100 }: IShellProps) {
   const isMove = useRef({ isMove: false, x: left, y: top, resizePosition: false })
   const shellRef = useRef<HTMLDivElement | null>(null)
-
+  const close = useRef(false)
   const splitShellRef = useRef() as MutableRefObject<IGlobalRef>
 
-  const { activeApp, activeAppList } = useAppSelector(({ win }) => win)
+  const { activeApp, activeAppList, appAnimateTime: time } = useAppSelector(({ win }) => win)
   const dispatch = useAppDispatch()
 
   const effect = () => {
     if (!size.animate) return
     setTimeout(() => {
-      setSize({ ...size, animate: false })
+      if (!close.current) {
+        setSize({ ...size, animate: false })
+      } else {
+        dispatch(closeApp(name))
+      }
     }, time)
   }
 
@@ -140,8 +144,10 @@ function index({ children, width, height, name, time = 300, top = 100, left = 10
       })
     } else {
       setSize((preState) => {
+        let { x, y } = prevPosition.current
+        if (isMove.current.resizePosition) x = y = 0
         shellRef.current!.style.opacity = '1'
-        shellRef.current!.style.transform = `translate(${prevPosition.current.x}px, ${prevPosition.current.y}px) scale(1)`
+        shellRef.current!.style.transform = `translate(${x}px, ${y}px) scale(1)`
         return { ...preState, animate: true }
       })
     }
@@ -150,6 +156,16 @@ function index({ children, width, height, name, time = 300, top = 100, left = 10
   const shrink = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     e.stopPropagation()
     dispatch(changeAppIsHide(name))
+  }, [])
+
+  const handleClose = useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    e.stopPropagation()
+    close.current = true
+    setSize((preState) => {
+      shellRef.current!.style.opacity = '.5'
+      shellRef.current!.style.transform = `translate(${prevPosition.current.x}px, ${prevPosition.current.y}px) scale(.9)`
+      return { ...preState, animate: true }
+    })
   }, [])
 
   return (
@@ -191,7 +207,7 @@ function index({ children, width, height, name, time = 300, top = 100, left = 10
               onMouseEnter={splitMouseHandler}
               onMouseLeave={splitMouseHandler}
             />
-            <Icon src="window-close-symbolic" size="small" status="actions" />
+            <Icon src="window-close-symbolic" size="small" status="actions" onClick={handleClose} />
           </div>
         </div>
         <div className="shell-body">{children}</div>

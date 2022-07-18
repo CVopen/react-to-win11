@@ -89,7 +89,7 @@ export const TaskIconDiv = styled(CenteredDiv)`
     transition: all ${(props) => props.theme.transitionSlow} ease-in-out;
     position: absolute;
     bottom: 0;
-    width: ${({ active, hide }: { active: boolean; hide: boolean | undefined; down: boolean }) =>
+    width: ${({ active, hide }: { active: boolean; hide: boolean | undefined; down: boolean; index?: number }) =>
       hide ? 0 : active ? 12 : 7}px;
     height: 3px;
     background-color: ${({ active, theme }) => (active ? theme.themeColor : '#858585')};
@@ -98,6 +98,22 @@ export const TaskIconDiv = styled(CenteredDiv)`
   img {
     transform: scale(${({ down }) => (down ? 0.8 : 1)});
     transition: all ${(props) => props.theme.transitionSlow} ease-in-out;
+  }
+  span {
+    transform: translateY(40px) scale(0.9);
+    animation: move-top ${(props) => props.theme.transitionSlow} linear
+      ${({ index }) => ((index as number) > 4 ? 0.2 : 0.1 * (index as number))}s 1 alternate forwards;
+    @keyframes move-top {
+      0% {
+        transform: translateY(40px) scale(0.9);
+      }
+      30% {
+        transform: translateY(-20px) scale(0.8);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+      }
+    }
   }
   &:nth-child(2) {
     img {
