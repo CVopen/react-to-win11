@@ -8,12 +8,25 @@ import { changeAppIsHide, changeAppList } from '@/store/win'
 import { TAppList } from '@/store/win/state'
 import { render } from './render'
 
-function TaskIcon({ src, hide, name }: { src: string; hide: boolean | undefined; name?: string | undefined }) {
+function TaskIcon({
+  src,
+  hide,
+  name,
+  index,
+}: {
+  src: string
+  hide: boolean | undefined
+  name?: string | undefined
+  index?: number
+}) {
   const [active, setActive] = useState(false)
   const [down, setDown] = useState(false)
+
   const ref = useRef<HTMLDivElement | null>(null)
 
-  const { activeApp, activeAppList } = useAppSelector(({ win }) => win)
+  const isClick = useRef(true)
+
+  const { activeApp, activeAppList, appAnimateTime: time } = useAppSelector(({ win }) => win)
   const dispatch = useAppDispatch()
 
   const handleMouse = useCallback((e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
@@ -37,12 +50,19 @@ function TaskIcon({ src, hide, name }: { src: string; hide: boolean | undefined;
 
       return dispatch(
         changeAppList(
-          Array.isArray(app) ? { app: app[1] as ReactNode, name, info: app[0] as TAppList } : { app, name },
+          Array.isArray(app)
+            ? { app: app[1] as ReactNode, name, info: app[0] as TAppList }
+            : { app, name: name === 'explorer' ? 'CVopen' : name },
         ),
       )
     }
-
+    if (!isClick.current) return
     setActive(!active)
+    isClick.current = false
+    setTimeout(() => {
+      isClick.current = true
+    }, time)
+
     if (name === 'explorer') {
       const eList = activeAppList.reduce((target, item) => {
         if (explorerList.includes(item.name)) target.push(item.name)
@@ -61,7 +81,7 @@ function TaskIcon({ src, hide, name }: { src: string; hide: boolean | undefined;
   }
 
   useEffect(() => {
-    if (hide) return
+    if (hide) return setActive(false)
     setActive(activeApp === name || (explorerList.includes(activeApp) && name === 'explorer'))
   }, [activeApp, hide])
 
@@ -76,8 +96,15 @@ function TaskIcon({ src, hide, name }: { src: string; hide: boolean | undefined;
       onClick={handleClick}
       data-src={src}
       data-name={name}
+      index={index}
     >
-      <Image width={24} height={24} src={require(`../../../assets/icon/task/${src}.png`)} data-src={src} />
+      {typeof index === 'number' ? (
+        <span>
+          <Image width={24} height={24} src={require(`../../../assets/icon/task/${src}.png`)} data-src={src} />
+        </span>
+      ) : (
+        <Image width={24} height={24} src={require(`../../../assets/icon/task/${src}.png`)} data-src={src} />
+      )}
     </TaskIconDiv>
   )
 }

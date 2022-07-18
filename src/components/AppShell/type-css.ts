@@ -6,7 +6,6 @@ export interface IShellProps {
   name: string
   width?: number
   height?: number
-  time?: number
   top?: number
   left?: number
 }

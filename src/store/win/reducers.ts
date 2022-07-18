@@ -4,6 +4,15 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { ReactNode } from 'react'
 import { TdesktopS, IWinState, TAppList, IActiveAppList } from './state'
 
+const hideApp = (state: IWinState, name: string) => {
+  if (explorerList.includes(name)) {
+    state.appListTar[3].hide = false
+  }
+  if (name === 'Microsoft Edge') {
+    state.appListTar[4].hide = false
+  }
+}
+
 const wallunlock = (state: IWinState) => {
   state.lock = false
   session.setItem('lock', state.lock)
@@ -23,21 +32,11 @@ const changeAppList = (state: IWinState, action: PayloadAction<{ info?: TAppList
   state.activeApp = action.payload.name
   action.payload.app && state.activeAppList.push({ name: state.activeApp, app: action.payload.app, isHide: false })
 
-  if (explorerList.includes(action.payload.name)) {
-    state.appListTar[3].hide = false
-  }
-  if (action.payload.name === 'Microsoft Edge') {
-    state.appListTar[4].hide = false
-  }
+  hideApp(state, action.payload.name)
 }
 
 const changeAppActive = (state: IWinState, action: PayloadAction<string>) => {
-  if (explorerList.includes(action.payload)) {
-    state.appListTar[3].hide = false
-  }
-  if (action.payload === 'Microsoft Edge') {
-    state.appListTar[4].hide = false
-  }
+  hideApp(state, action.payload)
   state.activeApp = action.payload
 }
 
@@ -48,22 +47,58 @@ const changeAppIsHide = (state: IWinState, action: PayloadAction<string>) => {
 
   if (!item.isHide) {
     state.activeApp = action.payload
+    return
+  }
+
+  if (!explorerList.includes(action.payload)) {
+    state.activeApp = ''
+    return
+  }
+
+  const eList = state.activeAppList.reduce((target, item) => {
+    if (explorerList.includes(item.name)) target.push(item)
+    return target
+  }, [] as IActiveAppList[])
+  if (eList.length === 1) {
+    state.activeApp = ''
   } else {
-    if (explorerList.includes(action.payload)) {
-      const eList = state.activeAppList.reduce((target, item) => {
-        if (explorerList.includes(item.name)) target.push(item)
-        return target
-      }, [] as IActiveAppList[])
-      if (eList.length === 1) {
-        state.activeApp = ''
-      } else {
-        const nextExplorerApp = eList.find((item) => !item.isHide)
-        state.activeApp = nextExplorerApp ? nextExplorerApp.name : ''
-      }
-    } else {
-      state.activeApp = ''
-    }
+    const nextExplorerApp = eList.find((item) => !item.isHide)
+    state.activeApp = nextExplorerApp ? nextExplorerApp.name : ''
   }
 }
 
-export default { wallunlock, changeTheme, changeDesktopSize, changeAppList, changeAppActive, changeAppIsHide }
+const closeApp = (state: IWinState, action: PayloadAction<string>) => {
+  state.activeAppList = state.activeAppList.reduce((target, item) => {
+    if (item.name !== action.payload) {
+      target.push(item)
+    } else {
+      changeAppIsHide(state, { payload: action.payload, type: 'win/changeAppIsHide' })
+    }
+    return target
+  }, [] as IActiveAppList[])
+
+  if (explorerList.includes(action.payload)) {
+    const isExplorerHide = state.activeAppList.reduce((target, item) => {
+      if (explorerList.includes(item.name)) target.push(item)
+      return target
+    }, [] as IActiveAppList[]).length
+    if (!isExplorerHide) state.appListTar[3].hide = true
+  } else if (action.payload === 'Microsoft Edge') {
+    state.appListTar[4].hide = true
+  } else {
+    state.appListTar = state.appListTar.reduce((target, item) => {
+      if (item.name !== action.payload) target.push(item)
+      return target
+    }, [] as typeof state.appListTar)
+  }
+}
+
+export default {
+  wallunlock,
+  changeTheme,
+  changeDesktopSize,
+  changeAppList,
+  changeAppActive,
+  changeAppIsHide,
+  closeApp,
+}

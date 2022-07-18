@@ -32,8 +32,8 @@ function TaskBar() {
         <TaskIcon src="widget" hide />
       </div>
       <div className="task-middle" style={{ width: appListTar.length * 40 }}>
-        {appListTar.map(({ src, hide, name }) => (
-          <TaskIcon key={src} src={src} hide={hide} name={name} />
+        {appListTar.map(({ src, hide, name }, index) => (
+          <TaskIcon key={src} src={src} hide={hide} name={name} index={index} />
         ))}
       </div>
       <div className="task-right">

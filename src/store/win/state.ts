@@ -23,6 +23,7 @@ export interface IWinState {
   appListTar: TAppList[]
   activeApp: string
   activeAppList: IActiveAppList[]
+  appAnimateTime: number
 }
 
 export const initialState: IWinState = {
@@ -39,4 +40,5 @@ export const initialState: IWinState = {
   ],
   activeApp: '',
   activeAppList: [],
+  appAnimateTime: 300,
 }
