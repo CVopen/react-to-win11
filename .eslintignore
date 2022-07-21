@@ -8,3 +8,4 @@ webpack.config.js
 *.png
 *.jpg
 .md
+./build

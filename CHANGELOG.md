@@ -1,3 +1,9 @@
+## [0.0.2](https://github.com/CVopen/react-to-win11/compare/v0.0.1...v0.0.2) (2022-07-21)
+
+### Features
+
+- **preview:** app preview ([e44eeba](https://github.com/CVopen/react-to-win11/commit/e44eeba8fa9ad2bb79aaadd7d162ecc472bd70c2))
+
 ## 0.0.1 (2022-07-12)
 
 ### Bug Fixes
