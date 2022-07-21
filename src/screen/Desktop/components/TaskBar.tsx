@@ -1,15 +1,18 @@
-import React, { memo } from 'react'
+import React, { memo, MutableRefObject, useRef } from 'react'
 import { AiOutlineUp } from 'react-icons/ai'
 
 import useStatusEff from '@/hooks/useStatusEff'
 import { useAppSelector } from '@/store'
 import dayjs from 'dayjs'
-import { TaskBarDiv } from '../type-css'
+import { IPreviewRef, TaskBarDiv } from '../type-css'
 import TaskIcon from './TaskIcon'
 import Icon from '@/components/Icon'
+import TaskPreview from './TaskPreview'
 
 function TaskBar() {
   const { boot, lock, appListTar } = useAppSelector(({ win }) => win)
+
+  const previewRef = useRef() as MutableRefObject<IPreviewRef>
 
   const effect = () => {
     const setTime = () => {
@@ -33,7 +36,7 @@ function TaskBar() {
       </div>
       <div className="task-middle" style={{ width: appListTar.length * 40 }}>
         {appListTar.map(({ src, hide, name }, index) => (
-          <TaskIcon key={src} src={src} hide={hide} name={name} index={index} />
+          <TaskIcon key={src} src={src} hide={hide} name={name} index={index} preview={previewRef.current} />
         ))}
       </div>
       <div className="task-right">
@@ -48,6 +51,7 @@ function TaskBar() {
           <span>{time}</span> <span>{date}</span>
         </div>
       </div>
+      <TaskPreview ref={previewRef} width={appListTar.length * 40} />
     </TaskBarDiv>
   )
 }

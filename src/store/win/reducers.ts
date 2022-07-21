@@ -1,11 +1,11 @@
-import { explorerList } from '@/utils'
+import { isExploer } from '@/utils'
 import { session } from '@/utils/storage'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { ReactNode } from 'react'
 import { TdesktopS, IWinState, TAppList, IActiveAppList } from './state'
 
 const hideApp = (state: IWinState, name: string) => {
-  if (explorerList.includes(name)) {
+  if (isExploer(name)) {
     state.appListTar[3].hide = false
   }
   if (name === 'Microsoft Edge') {
@@ -40,23 +40,30 @@ const changeAppActive = (state: IWinState, action: PayloadAction<string>) => {
   state.activeApp = action.payload
 }
 
-const changeAppIsHide = (state: IWinState, action: PayloadAction<string>) => {
+const changeAppIsHide = (state: IWinState, action: PayloadAction<string | { name: string }>) => {
+  let isPrevew = false
+  if (typeof action.payload !== 'string') {
+    action.payload = action.payload.name
+    isPrevew = true
+  }
+
   const item = state.activeAppList.find(({ name }) => name === action.payload)
   if (!item) return
-  item.isHide = !item.isHide
+
+  item.isHide = isPrevew ? false : !item.isHide
 
   if (!item.isHide) {
     state.activeApp = action.payload
     return
   }
 
-  if (!explorerList.includes(action.payload)) {
+  if (!isExploer(action.payload)) {
     state.activeApp = ''
     return
   }
 
   const eList = state.activeAppList.reduce((target, item) => {
-    if (explorerList.includes(item.name)) target.push(item)
+    if (isExploer(item.name)) target.push(item)
     return target
   }, [] as IActiveAppList[])
   if (eList.length === 1) {
@@ -77,9 +84,9 @@ const closeApp = (state: IWinState, action: PayloadAction<string>) => {
     return target
   }, [] as IActiveAppList[])
 
-  if (explorerList.includes(action.payload)) {
+  if (isExploer(action.payload)) {
     const isExplorerHide = state.activeAppList.reduce((target, item) => {
-      if (explorerList.includes(item.name)) target.push(item)
+      if (isExploer(item.name)) target.push(item)
       return target
     }, [] as IActiveAppList[]).length
     if (!isExplorerHide) state.appListTar[3].hide = true

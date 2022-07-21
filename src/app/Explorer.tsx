@@ -4,7 +4,7 @@ import React, { memo } from 'react'
 function Explorer({ name }: { name: string }) {
   return (
     <AppShell name={name}>
-      <div style={{ height: '200%' }}>Explorer</div>
+      <div style={{ height: '200%' }}>{name}</div>
     </AppShell>
   )
 }

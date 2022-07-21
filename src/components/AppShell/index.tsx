@@ -8,14 +8,7 @@ import { Direction } from 're-resizable/lib/resizer'
 import SplitScreen from './SplitScreen'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { changeAppActive, changeAppIsHide, closeApp } from '@/store/win'
-import { explorerList } from '@/utils'
-
-function computedTransform(dom: HTMLDivElement): [number, number] {
-  let transform: string | string[] = getComputedStyle(dom, null).transform
-  if (transform === 'none') transform = '0,0,0,0,0,0)'
-  transform = transform.slice(0, transform.length - 1).split(',')
-  return [Number(transform[4]), Number(transform[5])]
-}
+import { computedTransform, getKeyName } from '@/utils'
 
 const minWidth = 360
 const minHeight = 300
@@ -54,7 +47,7 @@ function index({ children, width, height, name, top = 100, left = 100 }: IShellP
       if (size.animate || (e.target as HTMLElement).tagName.toLowerCase() === 'img') return
       appActive()
       const { clientX, clientY } = e
-      const [x, y] = computedTransform(shellRef.current as HTMLDivElement)
+      const [x, y] = computedTransform(shellRef.current as HTMLElement)
       isMove.current = {
         ...isMove.current,
         isMove: true,
@@ -98,7 +91,7 @@ function index({ children, width, height, name, top = 100, left = 100 }: IShellP
       d.width += size.width
       d.height += size.height
       setSize({ ...size, ...d })
-      const [x, y] = computedTransform(shellRef.current as HTMLDivElement)
+      const [x, y] = computedTransform(shellRef.current as HTMLElement)
       prevPosition.current = { x, y, w: d.width, h: d.height, full: false }
     },
     [size],
@@ -133,7 +126,7 @@ function index({ children, width, height, name, top = 100, left = 100 }: IShellP
     if (item?.isHide) {
       const taskBarItem = document
         .querySelector('.task-middle')!
-        .querySelector(`div[data-name='${explorerList.includes(name) ? 'explorer' : name}']`) as HTMLElement
+        .querySelector(`div[data-name='${getKeyName(name)}']`) as HTMLElement
       const barLeft = taskBarItem?.getBoundingClientRect().left
       setSize((preState) => {
         const x = (barLeft as number) - left - preState.width / 2
@@ -163,13 +156,18 @@ function index({ children, width, height, name, top = 100, left = 100 }: IShellP
     close.current = true
     setSize((preState) => {
       shellRef.current!.style.opacity = '.5'
-      shellRef.current!.style.transform = `translate(${prevPosition.current.x}px, ${prevPosition.current.y}px) scale(.9)`
+      let { x, y } = prevPosition.current
+      if (prevPosition.current.full) x = y = 0
+
+      shellRef.current!.style.transform = `translate(${x}px, ${y}px) scale(.9)`
       return { ...preState, animate: true }
     })
   }, [])
 
   return (
     <ShellDiv
+      className="app-shell"
+      data-name={name}
       ref={shellRef}
       style={{
         transition: size.animate ? `all ${time}ms` : '',
@@ -210,7 +208,9 @@ function index({ children, width, height, name, top = 100, left = 100 }: IShellP
             <Icon src="window-close-symbolic" size="small" status="actions" onClick={handleClose} />
           </div>
         </div>
-        <div className="shell-body">{children}</div>
+        <div className="shell-body" data-name={name}>
+          {children}
+        </div>
         <SplitScreen ref={splitShellRef} splitSetSize={splitSetSize} />
       </Resizable>
     </ShellDiv>
