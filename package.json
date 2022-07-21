@@ -1,6 +1,6 @@
 {
   "name": "react-to-win11",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -58,6 +58,7 @@
     "@reduxjs/toolkit": "^1.8.2",
     "axios": "^0.27.2",
     "dayjs": "^1.11.3",
+    "html2canvas": "^1.4.1",
     "re-resizable": "^6.9.9",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",

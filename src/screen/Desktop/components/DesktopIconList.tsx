@@ -76,12 +76,14 @@ function DesktopIconList() {
     if (isTimer.current) return
     isTimer.current = true
     const name = (e.target as HTMLElement).dataset.name as string
-    const activeApp = activeAppList.find((item) => item.name === name)
-    if (activeApp) return
-    if (name === 'Github') isTimer.current = false
-    let app = render(name)
+    const isOpenShell = activeAppList.find((item) => item.name === name)
 
-    if (!app) return
+    const app = render(name)
+
+    if (!app || name === 'Github' || isOpenShell) {
+      isTimer.current = false
+      return
+    }
 
     dispatch(
       changeAppList(Array.isArray(app) ? { app: app[1] as ReactNode, name, info: app[0] as TAppList } : { app, name }),

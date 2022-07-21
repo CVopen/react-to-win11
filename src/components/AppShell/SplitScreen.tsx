@@ -1,7 +1,6 @@
+import { Timer } from '@/utils'
 import React, { memo, useRef, forwardRef, useImperativeHandle, MutableRefObject } from 'react'
 import { IGlobalRef, ISplitProps } from './type-css'
-
-type Timer = ReturnType<typeof setTimeout>
 
 const size = [
   {
@@ -118,13 +117,15 @@ const SplitScreen = forwardRef((props: ISplitProps, ref) => {
   }
 
   const hide = (offHand?: boolean) => {
-    screenRef.current!.style.opacity = '0'
     clear()
+    if (!screenRef.current) return
+    screenRef.current.style.opacity = '0'
     timer.current = setTimeout(
       () => {
-        screenRef.current!.style.height = '0'
-        screenRef.current!.style.paddingTop = '0'
         clear()
+        if (!screenRef.current) return
+        screenRef.current.style.height = '0'
+        screenRef.current.style.paddingTop = '0'
       },
       offHand ? 400 : 0,
     )

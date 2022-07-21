@@ -1,6 +1,5 @@
+import { Timer } from '@/utils'
 import { useCallback, useEffect, useState } from 'react'
-
-type Timer = ReturnType<typeof setTimeout>
 
 export default function useResize() {
   const [error, setError] = useState(false)
