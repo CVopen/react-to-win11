@@ -138,9 +138,9 @@ function TaskIcon({
     handlePreview(true)
   }
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (e?: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
     clear()
-    preview?.close()
+    e && preview?.close()
   }
 
   return (
